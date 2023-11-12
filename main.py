@@ -68,5 +68,5 @@ dico_noms_prenoms_presidents = attribution_prenom(liste_noms_presidents)
 print(liste_noms_presidents)
 
 # Afficher le dictionnaire des noms / prénoms des présidents
-for president in dico_noms_prenoms_presidents.items():
-    print(president)
+# for president in dico_noms_prenoms_presidents.items():
+    # print(president)
