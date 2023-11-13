@@ -5,10 +5,9 @@
 import os
 
 def extraire_noms_presidents(dossier):
-    fichiers = os.listdir(dossier)
     noms_presidents = []
 
-    for discours in fichiers:
+    for discours in os.listdir(dossier):
         if discours.endswith(".txt"):
             nom_president = discours.split("_")[1].split(".")[0]
             noms_presidents.append(nom_president)
