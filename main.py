@@ -1,5 +1,5 @@
 # Projet Python - My first ChatBOT
-dsdsdqsq
+
 # Partie 1
 # 1.1 - Extraire les noms des présidents à partir des noms des fichiers texte fournis
 import os
