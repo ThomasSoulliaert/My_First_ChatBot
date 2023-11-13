@@ -70,3 +70,6 @@ print(liste_noms_presidents)
 # Afficher le dictionnaire des noms / prénoms des présidents
 # for president in dico_noms_prenoms_presidents.items():
     # print(president)
+
+
+# - 1.4 Convertir les textes des 8 fichiers en minuscules et stocker les contenus dans de nouveaux fichiers. 
