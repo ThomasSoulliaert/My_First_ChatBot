@@ -1,6 +1,20 @@
 # pychatbot-biville-soulliaert-d
 
-Les noms des membre de l’équipe projet,
-o une notice d'utilisation,
-o d'éventuels dépendances à installer,
-o la liste des bugs connus
+EFREI Paris, L1, Groupe D
+
+Noms des membre de l’équipe projet:
+- BIVILLE Guillaume
+- SOULLIAERT Thomas
+
+Noms des professeurs:
+- CHABCHOUB Kamel
+- YAHIAOUI Itheri
+
+Notice d'utilisation pour utiliser le code:
+
+
+Liste des éventuelles dépendances à installer:
+
+
+Liste des bugs connus:
+
