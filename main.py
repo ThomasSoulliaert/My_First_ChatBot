@@ -5,8 +5,10 @@
 import os
 
 def extraire_noms_presidents(dossier):
+    # code Python utilisé pour parcourir la liste des fichiers d’une extension donnée et dans un répertoire donné
     noms_presidents = []
 
+    # Parcourez chaque fichier dans le dossier
     for discours in os.listdir(dossier):
         if discours.endswith(".txt"):
             nom_president = discours.split("_")[1].split(".")[0]
@@ -34,8 +36,8 @@ liste_noms_presidents = liste_sans_doublons(liste_noms_presidents_originale)
 
 
 # 1.2 - Associer à chaque président un prénom
-# Création d'un dictionnnaire pour associer à chaque nom un prénom
 def attribution_prenom(liste):
+    # Création d'un dictionnnaire pour associer à chaque nom un prénom
     dictionnaire = {}
 
     # Parcourez chaque nom dans la liste
@@ -71,4 +73,4 @@ print(liste_noms_presidents)
     # print(president)
 
 
-# - 1.4 Convertir les textes des 8 fichiers en minuscules et stocker les contenus dans de nouveaux fichiers. 
+# 1.4 - Convertir les textes des 8 fichiers en minuscules et stocker les contenus dans de nouveaux fichiers. 
