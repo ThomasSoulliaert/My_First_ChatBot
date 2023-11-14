@@ -74,3 +74,27 @@ print(liste_noms_presidents)
 
 
 # 1.4 - Convertir les textes des 8 fichiers en minuscules et stocker les contenus dans de nouveaux fichiers. 
+def convertir_minuscule(dossier_source, dossier_destination):
+    # Créer le nouveau dossier s'il n'existe pas déjà
+    if not os.path.exists(dossier_destination):
+        os.makedirs(dossier_destination)
+
+    # Parcours de chaque fichier du dossier source
+    for file_name in os.listdir(dossier_source):
+        # Chemin complet pour le fichier source et destination
+        source_file_path = os.path.join(dossier_source, file_name)
+        destination_file_path = os.path.join(dossier_destination, file_name)
+
+        # Vérifie que le fichier est un fichier texte
+        if file_name.endswith(".txt"):
+            # Ouvre le fichier source en lecture
+            with open(source_file_path, 'r') as source_file:
+                # Lit le contenu du fichier et le convertit en minuscules
+                content = source_file.read().lower()
+
+                # Crée un nouveau fichier dans le dossier destination avec le contenu en minuscules
+                with open(destination_file_path, 'w') as destination_file:
+                    destination_file.write(content)
+
+# Appel de la fonction
+convertir_minuscule("speeches", "cleaned")
