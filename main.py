@@ -134,3 +134,10 @@ def supprimer_ponctuation(dossier):
 # Appel de la fonction
 supprimer_ponctuation("cleaned")
 
+                # Crée une fonction pour remplacer la ponctuation et les tirets par des espaces
+                def nettoyer_texte(text):
+                    cleaned_text = ''.join(' ' if c in string.punctuation or c == '-' else c for c in text)
+                    return cleaned_text
+
+                # Nettoie le contenu du fichier
+                nouveau_contenu = nettoyer_texte(contenu)
