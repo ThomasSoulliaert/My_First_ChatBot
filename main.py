@@ -6,6 +6,7 @@ import os
 import re
 import string
 
+
 def extraire_noms_presidents(dossier):
     # code Python utilisé pour parcourir la liste des fichiers d’une extension donnée et dans un répertoire donné
     noms_presidents = []
@@ -18,21 +19,24 @@ def extraire_noms_presidents(dossier):
 
     return noms_presidents
 
+
 liste_noms_presidents_originale = extraire_noms_presidents("speeches")
+
 
 # Changer la liste principale pour éviter les doublons
 def liste_sans_doublons(liste):
     noms_presidents_sans_doublons = []
-    
+
     # Utilisation des splits et des slices pour éviter les doublons
     for nom in liste:
-        if nom[:-1] not in noms_presidents_sans_doublons and nom[-1] in [str(i) for i in range (10)]:
+        if nom[:-1] not in noms_presidents_sans_doublons and nom[-1] in [str(i) for i in range(10)]:
             noms_presidents_sans_doublons.append(nom[:-1])
-            
-        elif nom not in noms_presidents_sans_doublons and nom[-1] not in [str(i) for i in range (10)]:
+
+        elif nom not in noms_presidents_sans_doublons and nom[-1] not in [str(i) for i in range(10)]:
             noms_presidents_sans_doublons.append(nom)
-            
+
     return noms_presidents_sans_doublons
+
 
 liste_noms_presidents = liste_sans_doublons(liste_noms_presidents_originale)
 
@@ -47,35 +51,36 @@ def attribution_prenom(liste):
         # Associez le nom à un prénom
         if nom == "Chirac":
             dictionnaire[nom] = "Jacques"
-            
+
         elif nom == "Giscard dEstaing":
             dictionnaire[nom] = "Valéry"
-            
+
         elif nom == "Hollande" or nom == "Mitterrand":
             dictionnaire[nom] = "François"
-            
+
         elif nom == "Macron":
             dictionnaire[nom] = "Emmanuel"
-            
+
         elif nom == "Sarkozy":
             dictionnaire[nom] = "Nicolas"
-    
+
     # Retourner le dictionnaire
     return dictionnaire
+
 
 # Appel de la fonction pour créer le dictionnaire
 dico_noms_prenoms_presidents = attribution_prenom(liste_noms_presidents)
 
-
 # 1.3 - Afficher la liste des noms des présidents (sans doublons)
 print(liste_noms_presidents)
 
+
 # Afficher le dictionnaire des noms / prénoms des présidents
-# for president in dico_noms_prenoms_presidents.items():
-    # print(president)
+for president in dico_noms_prenoms_presidents.items():
+    print(president)
 
 
-# 1.4 - Convertir les textes des 8 fichiers en minuscules et stocker les contenus dans de nouveaux fichiers. 
+# 1.4 - Convertir les textes des 8 fichiers en minuscules et stocker les contenus dans de nouveaux fichiers.
 def convertir_minuscule(dossier_source, dossier_destination):
     # Créer le nouveau dossier s'il n'existe pas déjà
     if not os.path.exists(dossier_destination):
@@ -98,6 +103,7 @@ def convertir_minuscule(dossier_source, dossier_destination):
                 with open(destination_file_path, 'w', encoding='utf-8') as destination_file:
                     destination_file.write(content)
 
+
 # Appel de la fonction
 convertir_minuscule("speeches", "cleaned")
 
@@ -106,10 +112,10 @@ convertir_minuscule("speeches", "cleaned")
 def supprimer_ponctuation(dossier):
     # Parcours de chaque fichier du dossier source
     for file_name in os.listdir(dossier):
-        
+
         # Chemin complet pour le fichier source
         source_file_path = os.path.join(dossier, file_name)
-    
+
         # Vérifie que le fichier est un fichier texte
         if file_name.endswith(".txt"):
             # Ouvre le fichier source en lecture
@@ -117,27 +123,31 @@ def supprimer_ponctuation(dossier):
                 # Lit le contenu du fichier
                 contenu = source_file.read()
 
-                # Supprime la ponctuation du contenu et remplace les tirets par des espaces
-#                 for char in contenu:
-#                     if char not in ['.', ',', ':', ';', '!', '?']:
-#                         nouveau_contenu = ''.join(char)
-#                     elif char == "-" or char == "'":
-#                         nouveau_contenu = ''.join(' ')
-                
-                #nouveau_contenu = ''.join(char if char not in string.punctuation else ' ' if char == '-' else char for char in contenu)
-                nouveau_contenu = re.sub(r'[-' + re.escape(string.punctuation) + ']', ' ', contenu)
-                
-            # Réécrire le fichier avec le contenu nettoyé
-            with open(source_file_path, 'w', encoding='utf-8') as source_file:
-                source_file.write(nouveau_contenu)
-    
-# Appel de la fonction
-supprimer_ponctuation("cleaned")
-
                 # Crée une fonction pour remplacer la ponctuation et les tirets par des espaces
                 def nettoyer_texte(text):
-                    cleaned_text = ''.join(' ' if c in string.punctuation or c == '-' else c for c in text)
+                    for c in text:
+                        if (c == "'" or c == '-') :
+                            cleaned_text = ''.join(' ')
+                        elif c in string.punctuation:
+                            cleaned_text = ''.join('')
+                        else:
+                            cleaned_text = ''.join(c)
+
+
+
+                    #cleaned_text = ''.join(' ' if (c =="'" or c == '-') ''elif c in string.punctuation else c for c in text)
                     return cleaned_text
 
                 # Nettoie le contenu du fichier
                 nouveau_contenu = nettoyer_texte(contenu)
+
+            # Réécrire le fichier avec le contenu nettoyé
+            with open(source_file_path, 'w', encoding='utf-8') as source_file:
+                source_file.write(nouveau_contenu)
+
+
+# Appel de la fonction
+supprimer_ponctuation("cleaned")
+
+
+
