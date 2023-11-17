@@ -3,6 +3,7 @@
 # Partie 1
 # 1.1 - Extraire les noms des présidents à partir des noms des fichiers texte fournis
 import os
+import string
 
 def extraire_noms_presidents(dossier):
     # code Python utilisé pour parcourir la liste des fichiers d’une extension donnée et dans un répertoire donné
@@ -93,10 +94,40 @@ def convertir_minuscule(dossier_source, dossier_destination):
                 content = source_file.read().lower()
 
                 # Crée un nouveau fichier dans le dossier destination avec le contenu en minuscules
-                with open(destination_file_path, 'w') as destination_file:
+                with open(destination_file_path, 'w', encoding='utf-8') as destination_file:
                     destination_file.write(content)
 
 # Appel de la fonction
 convertir_minuscule("speeches", "cleaned")
 
-pipi
+
+# 1.5 - Parcourir chaque texte du cleaned et supprimer tout caractère de ponctuation (sauf ' et - à remplacer par un espace)
+def supprimer_ponctuation(dossier):
+    # Parcours de chaque fichier du dossier source
+    for file_name in os.listdir(dossier):
+        
+        # Chemin complet pour le fichier source
+        source_file_path = os.path.join(dossier, file_name)
+    
+        # Vérifie que le fichier est un fichier texte
+        if file_name.endswith(".txt"):
+            # Ouvre le fichier source en lecture
+            with open(source_file_path, 'r') as source_file:
+                # Lit le contenu du fichier
+                contenu = source_file.read()
+
+                # Supprime la ponctuation du contenu et remplace les tirets par des espaces
+                for char in contenu:
+                    if char not in string.punctuation:
+                        nouveau_contenu = ''.join(char)
+                    elif char == "-" or char == "'":
+                        nouveau_contenu = ''.join(' ')
+                
+                #nouveau_contenu = ''.join(char if char not in string.punctuation else ' ' if char == '-' else char for char in content)
+                
+            # Réécrire le fichier avec le contenu nettoyé
+            with open(source_file_path, 'w', encoding='utf-8') as source_file:
+                source_file.write(nouveau_contenu)
+    
+# Appel de la fonction
+supprimer_ponctuation("cleaned")
