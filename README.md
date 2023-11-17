@@ -1,9 +1,10 @@
-# pychatbot-biville-soulliaert-d
+# pychatbot-biville-lefrancq-soulliaert-d
 
 EFREI Paris, L1, Groupe D
 
 Noms des membre de l’équipe projet:
 - BIVILLE Guillaume
+- LEFRANCQ Nicolas
 - SOULLIAERT Thomas
 
 Noms des professeurs:
