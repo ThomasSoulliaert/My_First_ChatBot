@@ -3,6 +3,7 @@
 # Partie 1
 # 1.1 - Extraire les noms des présidents à partir des noms des fichiers texte fournis
 import os
+import re
 import string
 
 def extraire_noms_presidents(dossier):
@@ -117,13 +118,14 @@ def supprimer_ponctuation(dossier):
                 contenu = source_file.read()
 
                 # Supprime la ponctuation du contenu et remplace les tirets par des espaces
-                for char in contenu:
-                    if char not in string.punctuation:
-                        nouveau_contenu = ''.join(char)
-                    elif char == "-" or char == "'":
-                        nouveau_contenu = ''.join(' ')
+#                 for char in contenu:
+#                     if char not in ['.', ',', ':', ';', '!', '?']:
+#                         nouveau_contenu = ''.join(char)
+#                     elif char == "-" or char == "'":
+#                         nouveau_contenu = ''.join(' ')
                 
-                #nouveau_contenu = ''.join(char if char not in string.punctuation else ' ' if char == '-' else char for char in content)
+                #nouveau_contenu = ''.join(char if char not in string.punctuation else ' ' if char == '-' else char for char in contenu)
+                nouveau_contenu = re.sub(r'[-' + re.escape(string.punctuation) + ']', ' ', contenu)
                 
             # Réécrire le fichier avec le contenu nettoyé
             with open(source_file_path, 'w', encoding='utf-8') as source_file:
@@ -131,3 +133,4 @@ def supprimer_ponctuation(dossier):
     
 # Appel de la fonction
 supprimer_ponctuation("cleaned")
+
