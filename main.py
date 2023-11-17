@@ -99,4 +99,4 @@ def convertir_minuscule(dossier_source, dossier_destination):
 # Appel de la fonction
 convertir_minuscule("speeches", "cleaned")
 
-pipi c 
+
