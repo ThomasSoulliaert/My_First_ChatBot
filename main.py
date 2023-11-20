@@ -130,7 +130,7 @@ supprimer_ponctuation("cleaned")
 
 # II - La méthode TF-IDF
 # 2.1 - Associer à chaque mot le nombre de fois qu’il apparait dans la chaine de caractères
-def dictionnaire_mot(chaine_de_caracteres):
+def dictionnaire_TF(chaine_de_caracteres):
     # Création d'un dictionnnaire pour associer à chaque mot un nombre d'occurrence
     dictionnaire = {} 
     
@@ -157,49 +157,14 @@ def dictionnaire_mot(chaine_de_caracteres):
         # On avance de 1 caractère pour ne pas prendre l'espace
         i += 1
                         
-    return dictionnaire_mot
+    return dictionnaire
             
 # Appel de la fonction
-x = dictionnaire_mot("azer dfgh erghj azer err err")
-
-"""
-
-# 1.5 - Parcourir chaque texte du cleaned et supprimer tout caractère de ponctuation (sauf ' et - à remplacer par un espace)
-def supprimer_ponctuation(dossier):
-    # Parcours de chaque fichier du dossier source
-    for file_name in os.listdir(dossier):
-        
-        # Chemin complet pour le fichier source
-        source_file_path = os.path.join(dossier, file_name)
+x = dictionnaire_TF("azer dfgh erghj azer err err")
+for i in x.items():
+    print(i)
     
-        # Vérifie que le fichier est un fichier texte
-        if file_name.endswith(".txt"):
-            # Ouvre le fichier source en lecture
-            with open(source_file_path, 'r') as source_file:
-                # Lit le contenu du fichier
-                contenu = source_file.read()
-
-                # Supprime la ponctuation du contenu et remplace les tirets par des espaces
-#                 for char in contenu:
-#                     if char not in ['.', ',', ':', ';', '!', '?']:
-#                         nouveau_contenu = ''.join(char)
-#                     elif char == "-" or char == "'":
-#                         nouveau_contenu = ''.join(' ')
-                
-                #nouveau_contenu = ''.join(char if char not in string.punctuation else ' ' if char == '-' else char for char in contenu)
-                nouveau_contenu = re.sub(r'[-' + re.escape(string.punctuation) + ']', ' ', contenu)
-                
-            # Réécrire le fichier avec le contenu nettoyé
-            with open(source_file_path, 'w', encoding='utf-8') as source_file:
-                source_file.write(nouveau_contenu)
     
-# Appel de la fonction
-supprimer_ponctuation("cleaned")
-
-                # Crée une fonction pour remplacer la ponctuation et les tirets par des espaces
-                def nettoyer_texte(text):
-                    cleaned_text = ''.join(' ' if c in string.punctuation or c == '-' else c for c in text)
-                    return cleaned_text
-
-                # Nettoie le contenu du fichier
-                nouveau_contenu = nettoyer_texte(contenu)"""
+# 2.2 - Dictionnaire associant à chaque mot son score IDF
+def dictionnaire_IDF(dossier):
+    print("")
