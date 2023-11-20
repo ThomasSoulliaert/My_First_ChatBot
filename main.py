@@ -3,8 +3,7 @@
 # Partie 1
 # 1.1 - Extraire les noms des présidents à partir des noms des fichiers texte fournis
 import os
-import re
-import string
+import math
 
 def extraire_noms_presidents(dossier):
     # code Python utilisé pour parcourir la liste des fichiers d’une extension donnée et dans un répertoire donné
@@ -24,7 +23,7 @@ liste_noms_presidents_originale = extraire_noms_presidents("speeches")
 def liste_sans_doublons(liste):
     noms_presidents_sans_doublons = []
     
-    # Utilisation des splits et des slices pour éviter les doublons
+    # Utilisation des slices pour éviter les doublons
     for nom in liste:
         if nom[:-1] not in noms_presidents_sans_doublons and nom[-1] in [str(i) for i in range (10)]:
             noms_presidents_sans_doublons.append(nom[:-1])
@@ -71,8 +70,8 @@ dico_noms_prenoms_presidents = attribution_prenom(liste_noms_presidents)
 print(liste_noms_presidents)
 
 # Afficher le dictionnaire des noms / prénoms des présidents
-# for president in dico_noms_prenoms_presidents.items():
-    # print(president)
+for president in dico_noms_prenoms_presidents.items():
+    print(president)
 
 
 # 1.4 - Convertir les textes des 8 fichiers en minuscules et stocker les contenus dans de nouveaux fichiers. 
@@ -128,3 +127,79 @@ def supprimer_ponctuation(dossier):
 # Appel de la fonction avec le dossier "cleaned"
 supprimer_ponctuation("cleaned")
 
+
+# II - La méthode TF-IDF
+# 2.1 - Associer à chaque mot le nombre de fois qu’il apparait dans la chaine de caractères
+def dictionnaire_mot(chaine_de_caracteres):
+    # Création d'un dictionnnaire pour associer à chaque mot un nombre d'occurrence
+    dictionnaire = {} 
+    
+    # Condition d'arrêt : le dernier caractère doit être un espace
+    if chaine_de_caracteres[-1] != ' ':
+        chaine_de_caracteres += ' '
+        
+    i = 0
+    i_max = len(chaine_de_caracteres) - 1
+    # Parcourez chaque mot dans le texte(fichier.txt)
+    while i < i_max:
+        mot = ""
+        while chaine_de_caracteres[i] != ' ':
+            mot += chaine_de_caracteres[i]
+            i += 1
+            
+        # Ajout du mot dans le dictionnaire s'il n'existe pas
+        if mot not in dictionnaire:
+            dictionnaire[mot] = 1
+        # Si le mot existe, on augmente son compteur de 1
+        else:
+            dictionnaire[mot] += 1
+            
+        # On avance de 1 caractère pour ne pas prendre l'espace
+        i += 1
+                        
+    return dictionnaire_mot
+            
+# Appel de la fonction
+x = dictionnaire_mot("azer dfgh erghj azer err err")
+
+"""
+
+# 1.5 - Parcourir chaque texte du cleaned et supprimer tout caractère de ponctuation (sauf ' et - à remplacer par un espace)
+def supprimer_ponctuation(dossier):
+    # Parcours de chaque fichier du dossier source
+    for file_name in os.listdir(dossier):
+        
+        # Chemin complet pour le fichier source
+        source_file_path = os.path.join(dossier, file_name)
+    
+        # Vérifie que le fichier est un fichier texte
+        if file_name.endswith(".txt"):
+            # Ouvre le fichier source en lecture
+            with open(source_file_path, 'r') as source_file:
+                # Lit le contenu du fichier
+                contenu = source_file.read()
+
+                # Supprime la ponctuation du contenu et remplace les tirets par des espaces
+#                 for char in contenu:
+#                     if char not in ['.', ',', ':', ';', '!', '?']:
+#                         nouveau_contenu = ''.join(char)
+#                     elif char == "-" or char == "'":
+#                         nouveau_contenu = ''.join(' ')
+                
+                #nouveau_contenu = ''.join(char if char not in string.punctuation else ' ' if char == '-' else char for char in contenu)
+                nouveau_contenu = re.sub(r'[-' + re.escape(string.punctuation) + ']', ' ', contenu)
+                
+            # Réécrire le fichier avec le contenu nettoyé
+            with open(source_file_path, 'w', encoding='utf-8') as source_file:
+                source_file.write(nouveau_contenu)
+    
+# Appel de la fonction
+supprimer_ponctuation("cleaned")
+
+                # Crée une fonction pour remplacer la ponctuation et les tirets par des espaces
+                def nettoyer_texte(text):
+                    cleaned_text = ''.join(' ' if c in string.punctuation or c == '-' else c for c in text)
+                    return cleaned_text
+
+                # Nettoie le contenu du fichier
+                nouveau_contenu = nettoyer_texte(contenu)"""
