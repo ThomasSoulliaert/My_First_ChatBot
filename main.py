@@ -17,23 +17,23 @@ def extraire_noms_presidents(dossier):
 
     return noms_presidents
 
-liste_noms_presidents_originale = extraire_noms_presidents("speeches")
+liste_noms_presidents = extraire_noms_presidents("speeches")
 
 # Changer la liste principale pour éviter les doublons
 def liste_sans_doublons(liste):
-    noms_presidents_sans_doublons = []
+    L = []
     
     # Utilisation des slices pour éviter les doublons
     for nom in liste:
-        if nom[:-1] not in noms_presidents_sans_doublons and nom[-1] in [str(i) for i in range (10)]:
-            noms_presidents_sans_doublons.append(nom[:-1])
+        if nom[:-1] not in L and nom[-1] in [str(i) for i in range (10)]:
+            L.append(nom[:-1])
             
-        elif nom not in noms_presidents_sans_doublons and nom[-1] not in [str(i) for i in range (10)]:
-            noms_presidents_sans_doublons.append(nom)
+        elif nom not in L and nom[-1] not in [str(i) for i in range (10)]:
+            L.append(nom)
             
-    return noms_presidents_sans_doublons
+    return L
 
-liste_noms_presidents = liste_sans_doublons(liste_noms_presidents_originale)
+liste_noms_presidents_sans_doublons = liste_sans_doublons(liste_noms_presidents)
 
 
 # 1.2 - Associer à chaque président un prénom
@@ -63,7 +63,7 @@ def attribution_prenom(liste):
     return dictionnaire
 
 # Appel de la fonction pour créer le dictionnaire
-dico_noms_prenoms_presidents = attribution_prenom(liste_noms_presidents)
+dico_noms_prenoms_presidents = attribution_prenom(liste_noms_presidents_sans_doublons)
 
 
 # 1.3 - Afficher la liste des noms des présidents (sans doublons)
@@ -81,17 +81,17 @@ def convertir_minuscule(dossier_source, dossier_destination):
         os.makedirs(dossier_destination)
 
     # Parcours de chaque fichier du dossier source
-    for file_name in os.listdir(dossier_source):
+    for fichier in os.listdir(dossier_source):
         # Chemin complet pour le fichier source et destination
-        source_file_path = os.path.join(dossier_source, file_name)
-        destination_file_path = os.path.join(dossier_destination, file_name)
+        source_file_path = os.path.join(dossier_source, fichier)
+        destination_file_path = os.path.join(dossier_destination, fichier)
 
         # Vérifie que le fichier est un fichier texte
-        if file_name.endswith(".txt"):
+        if fichier.endswith(".txt"):
             # Ouvre le fichier source en lecture
-            with open(source_file_path, 'r') as source_file:
+            with open(source_file_path, 'r') as fichier:
                 # Lit le contenu du fichier et le convertit en minuscules
-                content = source_file.read().lower()
+                content = fichier.read().lower()
 
                 # Crée un nouveau fichier dans le dossier destination avec le contenu en minuscules
                 with open(destination_file_path, 'w', encoding='utf-8') as destination_file:
