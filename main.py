@@ -1,7 +1,5 @@
 # Projet Python - My first ChatBOT
-# test
-# Partie 1
-# 1.1 - Extraire les noms des présidents à partir des noms des fichiers texte fournis
+
 import os
 import math
 
@@ -12,6 +10,8 @@ def list_of_files(directory, extension):
             files_names.append(filename)
     return files_names
 
+# Partie 1
+# 1.1 - Extraire les noms des présidents à partir des noms des fichiers texte fournis
 def extraire_noms_presidents(dossier):
     # code Python utilisé pour parcourir la liste des fichiers d’une extension donnée et dans un répertoire donné
     noms_presidents = []
@@ -24,6 +24,7 @@ def extraire_noms_presidents(dossier):
 
     return noms_presidents
 
+# Appel de la fonction
 liste_noms_presidents = extraire_noms_presidents("speeches")
 
 # Changer la liste principale pour éviter les doublons
@@ -40,6 +41,7 @@ def liste_sans_doublons(liste):
             
     return L
 
+# Appel de la fonction
 liste_noms_presidents_sans_doublons = liste_sans_doublons(liste_noms_presidents)
 
 
@@ -66,19 +68,14 @@ def attribution_prenom(liste):
         elif nom == "Sarkozy":
             dictionnaire[nom] = "Nicolas"
     
-    # Retourner le dictionnaire
     return dictionnaire
 
-# Appel de la fonction pour créer le dictionnaire
+# Appel de la fonction
 dico_noms_prenoms_presidents = attribution_prenom(liste_noms_presidents_sans_doublons)
 
 
 # 1.3 - Afficher la liste des noms des présidents (sans doublons)
 print(liste_noms_presidents)
-
-# Afficher le dictionnaire des noms / prénoms des présidents
-for president in dico_noms_prenoms_presidents.items():
-    print(president)
 
 
 # 1.4 - Convertir les textes des 8 fichiers en minuscules et stocker les contenus dans de nouveaux fichiers. 
@@ -134,11 +131,11 @@ def supprimer_ponctuation(dossier):
                 source_file.write(nouveau_contenu)
 
     # Appel de la fonction avec le dossier "cleaned"
-supprimer_ponctuation("cleaned")
+supprimer_ponctuation("./cleaned")
 
 
 # II - La méthode TF-IDF
-# 2.1 - Associer à chaque mot le nombre de fois qu’il apparait dans la chaine de caractères
+# 2.1 - Associer à chaque mot le nombre de fois qu’il apparait dans la chaîne de caractères
 def TF(fichier):
     # Création d'un dictionnnaire pour associer à chaque mot un nombre d'occurrence
     with open(f"./cleaned/{fichier}", "r") as f:
@@ -172,8 +169,8 @@ def IDF(dossier):
             else:
                 dictionnaire[i] = 1
 
-    for cle, val in dictionnaire.items():
-        dictionnaire[cle] = math.log(len(file_list) / val)
+    for key, val in dictionnaire.items():
+        dictionnaire[key] = math.log(len(file_list) / val)
 
     return dictionnaire
 
