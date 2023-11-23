@@ -83,12 +83,14 @@ for president in dico_noms_prenoms_presidents.items():
 
 # 1.4 - Convertir les textes des 8 fichiers en minuscules et stocker les contenus dans de nouveaux fichiers. 
 def convertir_minuscule(dossier_source, dossier_destination):
+    file_list = list_of_files(dossier_source, ".txt")
+
     # Créer le nouveau dossier s'il n'existe pas déjà
     if not os.path.exists(dossier_destination):
         os.makedirs(dossier_destination)
 
     # Parcours de chaque fichier du dossier source
-    for fichier in os.listdir(dossier_source):
+    for fichier in dossier_source:
         # Chemin complet pour le fichier source et destination
         source_file_path = os.path.join(dossier_source, fichier)
         destination_file_path = os.path.join(dossier_destination, fichier)
@@ -108,89 +110,73 @@ def convertir_minuscule(dossier_source, dossier_destination):
 convertir_minuscule("speeches", "cleaned")
 
 def supprimer_ponctuation(dossier):
-    file_list = list_of_files(dossier, ".txt")
+    # Parcours de chaque fichier du dossier
+    for file_name in os.listdir(dossier):
+        # Chemin complet pour le fichier source
+        source_file_path = os.path.join(dossier, file_name)
 
-    for file in file_list:
-        with open(file, 'r', encoding='utf-8') as source_file:
-            # Lit le contenu du fichier
-            contenu = source_file.read()
+        # Vérifie que le fichier est un fichier texte
+        if file_name.endswith(".txt"):
+            # Ouvre le fichier source en lecture
+            with open(source_file_path, 'r', encoding='utf-8') as source_file:
+                # Lit le contenu du fichier
+                contenu = source_file.read()
 
-            nouveau_contenu = ''
-            for c in contenu:
-                if c == "'" or c == '-':
-                    nouveau_contenu += ' '  # Remplacer par un espace
-                elif c not in ['.', ',', ':', '!', '?', ';', '/', '«', '»', '*', '_']:
-                    nouveau_contenu += c  # Ajouter le caractère s'il n'est pas une ponctuation
+                nouveau_contenu = ''
+                for c in contenu:
+                    if c == "'" or c == '-':
+                        nouveau_contenu += ' '  # Remplacer par un espace
+                    elif c not in ['.', ',', ':', '!', '?', ';', '/', '«', '»', '*', '_']:
+                        nouveau_contenu += c  # Ajouter le caractère s'il n'est pas une ponctuation
 
             # Réécrire le fichier avec le contenu nettoyé
-            with open(file, 'w', encoding='utf-8') as source_file:
+            with open(source_file_path, 'w', encoding='utf-8') as source_file:
                 source_file.write(nouveau_contenu)
 
-# Appel de la fonction avec le dossier "cleaned"
+    # Appel de la fonction avec le dossier "cleaned"
 supprimer_ponctuation("cleaned")
 
 
 # II - La méthode TF-IDF
 # 2.1 - Associer à chaque mot le nombre de fois qu’il apparait dans la chaine de caractères
-def TF(chaine_de_caracteres):
+def TF(fichier):
     # Création d'un dictionnnaire pour associer à chaque mot un nombre d'occurrence
-    dictionnaire = {}
+    with open(f"./cleaned/{fichier}", "r") as f:
+        liste_mots = f.read().split()
 
-    # Condition d'arrêt : le dernier caractère doit être un espace
-    if chaine_de_caracteres[-1] != ' ':
-        chaine_de_caracteres += ' '
-        
-    i = 0
-    i_max = len(chaine_de_caracteres) - 1
-    # Parcourez chaque mot dans le texte(fichier.txt)
-    while i < i_max:
-        mot = ""
-        while chaine_de_caracteres[i] != ' ':
-            mot += chaine_de_caracteres[i]
-            i += 1
-            
-        # Ajout du mot dans le dictionnaire s'il n'existe pas
-        if mot not in dictionnaire:
-            dictionnaire[mot] = 1
-        # Si le mot existe, on augmente son compteur de 1
-        else:
-            dictionnaire[mot] += 1
-            
-        # On avance de 1 caractère pour ne pas prendre l'espace
-        i += 1
-                        
-    return dictionnaire
+        dictionnaire = {}
+
+        for mot in liste_mots:
+            if mot in dictionnaire:
+                dictionnaire[mot] += 1
+            else:
+                dictionnaire[mot] = 1
+
+        return dictionnaire
             
 # Appel de la fonction
-x = TF("aze aze aze er er ter")
-for i in x.items():
-    print(i)
-    
-    
+x = TF("Nomination_Macron.txt")
+
+
 # 2.2 - Dictionnaire associant à chaque mot son score IDF
-def IDF(directory):
-    file_list = list_of_files(directory, ".txt")
+def IDF(dossier):
+    file_list = list_of_files(dossier, ".txt")
 
     dictionnaire = {}
 
-    for file in file_list:
-        with open(file, 'r', encoding='utf-8') as f:
-            texte = f.read()
-
-
-            nb_word = TF(texte)
-        for i in nb_word:
+    for fichier in file_list:
+        nombre_mots = TF(fichier)
+        for i in nombre_mots:
             if i in dictionnaire:
                 dictionnaire[i] += 1
             else:
                 dictionnaire[i] = 1
 
     for cle, val in dictionnaire.items():
-        dictionnaire[cle] = math.log((len(file_list) / val))
+        dictionnaire[cle] = math.log(len(file_list) / val)
 
     return dictionnaire
 
 # Appel de la fonction
 score_IDF = IDF("./cleaned")
-for i in score_IDF.items():
-    print(i)
+print(score_IDF)
