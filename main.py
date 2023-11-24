@@ -226,7 +226,7 @@ def TF_IDF2(dossier):
 
     matrice = []
     for mot in idf:
-        L = []
+        L = [mot]
         for fichier in file_list:
             tf = TF(fichier)
 
