@@ -79,58 +79,48 @@ print(liste_noms_presidents)
 
 
 # 1.4 - Convertir les textes des 8 fichiers en minuscules et stocker les contenus dans de nouveaux fichiers. 
-def convertir_minuscule(dossier_source, dossier_destination):
-    file_list = list_of_files(dossier_source, ".txt")
 
-    # Créer le nouveau dossier s'il n'existe pas déjà
-    if not os.path.exists(dossier_destination):
-        os.makedirs(dossier_destination)
+def convertir_minuscules(dossier_entree, dossier_sortie):
+    # Créer un dossier de sortie s'il n'existe pas
+    if not os.path.exists(dossier_sortie):
+        os.makedirs(dossier_sortie)
 
-    # Parcours de chaque fichier du dossier source
-    for fichier in dossier_source:
-        # Chemin complet pour le fichier source et destination
-        source_file_path = os.path.join(dossier_source, fichier)
-        destination_file_path = os.path.join(dossier_destination, fichier)
+    # Liste des fichiers texte dans le dossier d'entrée
+    fichiers = list_of_files(dossier_entree, ".txt")
 
-        # Vérifie que le fichier est un fichier texte
-        if fichier.endswith(".txt"):
-            # Ouvre le fichier source en lecture
-            with open(source_file_path, 'r') as fichier:
-                # Lit le contenu du fichier et le convertit en minuscules
-                content = fichier.read().lower()
+    # Conversion des fichiers texte en minuscules et sauvegarde dans le dossier de sortie
+    for fichier in fichiers:
+        with open(os.path.join(dossier_entree, fichier), 'r') as file:
+            contenu = file.read().lower()
 
-                # Crée un nouveau fichier dans le dossier destination avec le contenu en minuscules
-                with open(destination_file_path, 'w', encoding='utf-8') as destination_file:
-                    destination_file.write(content)
+        with open(os.path.join(dossier_sortie, fichier), 'w') as file_out:
+            file_out.write(contenu)
 
 # Appel de la fonction
-convertir_minuscule("speeches", "cleaned")
+convertir_minuscules("./speeches", "./cleaned")
+
 
 def supprimer_ponctuation(dossier):
-    # Parcours de chaque fichier du dossier
-    for file_name in os.listdir(dossier):
-        # Chemin complet pour le fichier source
-        source_file_path = os.path.join(dossier, file_name)
+    # Liste des fichiers texte dans le dossier
+    file_list = list_of_files(dossier, ".txt")
 
-        # Vérifie que le fichier est un fichier texte
-        if file_name.endswith(".txt"):
-            # Ouvre le fichier source en lecture
-            with open(source_file_path, 'r', encoding='utf-8') as source_file:
-                # Lit le contenu du fichier
-                contenu = source_file.read()
+    # Suppression des virgules dans les fichiers texte
+    for fichier in file_list:
+        with open(os.path.join(dossier, fichier), 'r') as file:
 
-                nouveau_contenu = ''
-                for c in contenu:
-                    if c == "'" or c == '-':
-                        nouveau_contenu += ' '  # Remplacer par un espace
-                    elif c not in ['.', ',', ':', '!', '?', ';', '/', '«', '»', '*', '_']:
-                        nouveau_contenu += c  # Ajouter le caractère s'il n'est pas une ponctuation
+            contenu = file.read()
 
-            # Réécrire le fichier avec le contenu nettoyé
-            with open(source_file_path, 'w', encoding='utf-8') as source_file:
-                source_file.write(nouveau_contenu)
+            nouveau_contenu = ''
+            for c in contenu:
+                if c == "'" or c == '-':
+                    nouveau_contenu += ' '  # Remplacer par un espace
+                elif c not in ['.', ',', ':', '!', '?', ';', '/', '«', '»', '*', '_']:
+                    nouveau_contenu += c  # Ajouter le caractère s'il n'est pas une ponctuation
 
-    # Appel de la fonction avec le dossier "cleaned"
+        with open(os.path.join(dossier, fichier), 'w') as file_out:
+            file_out.write(nouveau_contenu)
+
+# Appel de la fonction avec le dossier "cleaned"
 supprimer_ponctuation("./cleaned")
 
 
