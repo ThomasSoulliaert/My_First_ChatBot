@@ -171,7 +171,7 @@ score_IDF = IDF("./cleaned")
 
 
 # 2.3 - Méthode TF-IDF
-def TF_IDF(dossier):
+"""def TF_IDF(dossier):
     file_list = list_of_files(dossier, ".txt")
     idf = IDF(dossier)
 
@@ -189,24 +189,19 @@ def TF_IDF(dossier):
             occurences = tf.get(mot, 0)
             if mot in idf:
                 tfidf = occurences * idf[mot]
-                tfidf_par_mot.append(round(tfidf, 2))
+                tfidf_par_mot.append(tfidf)
             else:
                 tfidf_par_mot.append(0)
         matrice.append([mot] + tfidf_par_mot)
 
-    # Affichage de la matrice
-    header = "\t".join([os.path.basename(fichier) for fichier in file_list])
-    print(f"Mot\t{header}")
-    for ligne in matrice:
-        print("\t".join(map(str, ligne)))
-
     return matrice
 
-# Exemple d'utilisation
-dossier_a_analyser = "./cleaned"  # Remplacez ceci par le chemin de votre dossier à analyser
+# Appel de la fonction
+matrice = TF_IDF("./cleaned")
+for row in matrice:
+    print(row)
 
-matrice_tfidf = TF_IDF(dossier_a_analyser)
-"""def TF_IDF(dossier):
+def TF_IDF(dossier):
     file_list = list_of_files(dossier, ".txt")
     idf = IDF(dossier)
 
@@ -225,6 +220,28 @@ matrice = TF_IDF("./cleaned")
 for row in matrice:
     print(row)"""
 
+def TF_IDF2(dossier):
+    file_list = list_of_files(dossier, ".txt")
+    idf = IDF(dossier)
+
+    matrice = []
+    for mot in idf:
+        L = []
+        for fichier in file_list:
+            tf = TF(fichier)
+
+            if mot in tf:
+                tf_idf = tf[mot] * idf[mot]
+                L.append(tf_idf)
+            else:
+                L.append(0)
+
+        matrice.append(L)
+
+    return matrice
+
+matrice = TF_IDF2("./cleaned")
+print(matrice)
 
 
 
