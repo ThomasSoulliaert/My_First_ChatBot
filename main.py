@@ -262,13 +262,15 @@ def mots_importants(matrice):
     for i in range(len(matrice)):
         somme = 0
         for j in range(1, len(matrice[i])):
-            somme += matrice[i][j]
-        if somme > score:
-            score = somme
+            if matrice[i][j] > score:
+                score = matrice[i][j]
 
     L = []
     for i in range(len(matrice)):
+        ajouter_mot = False
         for j in range(1, len(matrice[i])):
             if matrice[i][j] == score:
-                L.append(matrice[i][0])
+                ajouter_mot = True
+        if ajouter_mot == True:
+            L.append(matrice[i][0])
     return L
