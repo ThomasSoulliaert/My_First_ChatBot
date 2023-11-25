@@ -240,18 +240,20 @@ def TF_IDF2(dossier):
     return matrice
 
 matrice = TF_IDF2("./cleaned")
-for i in matrice:
-    print(i)
+# for i in matrice:
+    # print(i)
 
 
 # III - Fonctionnalités à développer
 # 3.1 - Afficher la liste des mots les moins importants dans le corpus de documents (TD-IDF = 0 dans tous les fichiers)
-def mots_non_importants(matrice, nb_fichiers):
+def mots_non_importants(matrice):
     L = []
     for i in range(len(matrice)):
         somme = 0
-        for j in range(1, nb_fichiers + 1):
+        for j in range(1, len(matrice[i])):
             somme += matrice[i][j]
         if somme == 0:
             L.append(matrice[i][0])
     return L
+
+print(mots_non_importants(matrice))
