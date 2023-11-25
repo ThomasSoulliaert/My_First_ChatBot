@@ -219,7 +219,7 @@ matrice = TF_IDF("./cleaned")
 for row in matrice:
     print(row)"""
 
-def TF_IDF2(dossier):
+def TF_IDF(dossier):
     file_list = list_of_files(dossier, ".txt")
     idf = IDF(dossier)
 
@@ -239,7 +239,7 @@ def TF_IDF2(dossier):
 
     return matrice
 
-matrice = TF_IDF2("./cleaned")
+matrice = TF_IDF("./cleaned")
 # for i in matrice:
     # print(i)
 
@@ -256,4 +256,19 @@ def mots_non_importants(matrice):
             L.append(matrice[i][0])
     return L
 
-print(mots_non_importants(matrice))
+# 3.2 - Afficher le(s) mot(s) ayant le score TD-IDF le plus élevé
+def mots_importants(matrice):
+    score = 0
+    for i in range(len(matrice)):
+        somme = 0
+        for j in range(1, len(matrice[i])):
+            somme += matrice[i][j]
+        if somme > score:
+            score = somme
+
+    L = []
+    for i in range(len(matrice)):
+        for j in range(1, len(matrice[i])):
+            if matrice[i][j] == score:
+                L.append(matrice[i][0])
+    return L
