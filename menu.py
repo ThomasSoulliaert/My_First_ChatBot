@@ -22,4 +22,5 @@ elif numero == 3:
     print(liste3)
 
 elif numero == 4:
-    liste = apparition_mot()
+    resultat = apparition_mot("./cleaned", "nation")
+    print(resultat)

@@ -75,7 +75,7 @@ dico_noms_prenoms_presidents = attribution_prenom(liste_noms_presidents_sans_dou
 
 
 # 1.3 - Afficher la liste des noms des présidents (sans doublons)
-print("La liste des préseidents est : ", liste_noms_presidents_sans_doublons)
+print("La liste des présidents est : ", liste_noms_presidents_sans_doublons)
 
 
 # 1.4 - Convertir les textes des 8 fichiers en minuscules et stocker les contenus dans de nouveaux fichiers.
@@ -176,17 +176,17 @@ def TF_IDF(dossier):
 
     matrice = []
     for mot in idf:
-        L = [mot]
+        liste = [mot]
         for fichier in file_list:
             tf = TF(fichier)
 
             if mot in tf:
                 tf_idf = tf[mot] * idf[mot]
-                L.append(tf_idf)
+                liste.append(tf_idf)
             else:
-                L.append(0)
+                liste.append(0)
 
-        matrice.append(L)
+        matrice.append(liste)
 
     return matrice
 
@@ -196,14 +196,14 @@ matrice = TF_IDF("./cleaned")
 # III - Fonctionnalités à développer
 # 3.1 - Afficher la liste des mots les moins importants dans le corpus de documents (TD-IDF = 0 dans tous les fichiers)
 def mots_non_importants(matrice):
-    L = []
+    liste = []
     for i in range(len(matrice)):
         somme = 0
         for j in range(1, len(matrice[i])):
             somme += matrice[i][j]
         if somme == 0:
-            L.append(matrice[i][0])
-    return L
+            liste.append(matrice[i][0])
+    return liste
 
 
 # 3.2 - Afficher le(s) mot(s) ayant le score TD-IDF le plus élevé
@@ -215,15 +215,15 @@ def mots_importants(matrice):
             if matrice[i][j] > score:
                 score = matrice[i][j]
 
-    L = []
+    liste = []
     for i in range(len(matrice)):
         ajouter_mot = False
         for j in range(1, len(matrice[i])):
             if matrice[i][j] == score:
                 ajouter_mot = True
         if ajouter_mot == True:
-            L.append(matrice[i][0])
-    return L
+            liste.append(matrice[i][0])
+    return liste
 
 
 # 3.3 - Indiquer le(s) mot(s) le(s) plus répété(s) par un président (dans le test, Chirac)
@@ -234,13 +234,24 @@ def mots_repetes(fichier):
         if occurences > score:
             score = occurences
 
-    L = []
+    liste = []
     for mot in tf.keys():
         if tf[mot] == score:
-            L.append(mot)
+            liste.append(mot)
 
-    return L
+    return liste
 
 
 # 3.4 - Indiquer le(s) nom(s) du (des) président(s) qui a (ont) parlé de la « Nation » et celui qui l’a répété le plus de fois
-def apparition_mot(dossier, mot):
+def apparition_mot(dossier, mot_recherche):
+    file_list = list_of_files(dossier, ".txt")
+    L_noms_presidents = extraire_noms_presidents(dossier)
+    dictionnaire = {}
+
+    for fichier in file_list:
+        tf = TF(fichier)
+        if mot_recherche in tf.keys():
+            nom_president = fichier.split("_")[1].split(".")[0]
+            dictionnaire[nom_president] = tf[mot_recherche]
+
+    return dictionnaire
