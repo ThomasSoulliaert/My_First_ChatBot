@@ -75,7 +75,7 @@ dico_noms_prenoms_presidents = attribution_prenom(liste_noms_presidents_sans_dou
 
 
 # 1.3 - Afficher la liste des noms des présidents (sans doublons)
-print(liste_noms_presidents)
+print("La liste des préseidents est : ", liste_noms_presidents_sans_doublons)
 
 
 # 1.4 - Convertir les textes des 8 fichiers en minuscules et stocker les contenus dans de nouveaux fichiers.
@@ -240,8 +240,6 @@ def TF_IDF(dossier):
     return matrice
 
 matrice = TF_IDF("./cleaned")
-# for i in matrice:
-    # print(i)
 
 
 # III - Fonctionnalités à développer
@@ -255,6 +253,7 @@ def mots_non_importants(matrice):
         if somme == 0:
             L.append(matrice[i][0])
     return L
+
 
 # 3.2 - Afficher le(s) mot(s) ayant le score TD-IDF le plus élevé
 def mots_importants(matrice):
@@ -274,3 +273,22 @@ def mots_importants(matrice):
         if ajouter_mot == True:
             L.append(matrice[i][0])
     return L
+
+
+# 3.3 - Indiquer le(s) mot(s) le(s) plus répété(s) par un président (dans le test, Chirac)
+def mots_repetes(fichier):
+    tf = TF(fichier)
+    score = 0
+    for occurences in tf.values():
+        if occurences > score:
+            score = occurences
+
+    L = []
+    for mot in tf.keys():
+        if tf[mot] == score:
+            L.append(mot)
+
+    return L
+
+
+#
