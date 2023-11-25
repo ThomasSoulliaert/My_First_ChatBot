@@ -170,55 +170,6 @@ score_IDF = IDF("./cleaned")
 
 
 # 2.3 - Méthode TF-IDF
-"""def TF_IDF(dossier):
-    file_list = list_of_files(dossier, ".txt")
-    idf = IDF(dossier)
-
-    mots = set()
-
-    for fichier in file_list:
-        tf = TF(fichier)
-        mots.update(tf.keys())
-
-    matrice = []
-    for mot in mots:
-        tfidf_par_mot = []
-        for fichier in file_list:
-            tf = TF(fichier)
-            occurences = tf.get(mot, 0)
-            if mot in idf:
-                tfidf = occurences * idf[mot]
-                tfidf_par_mot.append(tfidf)
-            else:
-                tfidf_par_mot.append(0)
-        matrice.append([mot] + tfidf_par_mot)
-
-    return matrice
-
-# Appel de la fonction
-matrice = TF_IDF("./cleaned")
-for row in matrice:
-    print(row)
-
-def TF_IDF(dossier):
-    file_list = list_of_files(dossier, ".txt")
-    idf = IDF(dossier)
-
-    matrice = []
-    for fichier in file_list:
-        tf_idf = {}
-        tf = TF(fichier)
-        for mot, occurences in tf.items():
-            if mot in idf:
-                tf_idf[mot] = occurences * idf[mot]
-        matrice.append(tf_idf)
-
-    return matrice
-# Appel de la fonction
-matrice = TF_IDF("./cleaned")
-for row in matrice:
-    print(row)"""
-
 def TF_IDF(dossier):
     file_list = list_of_files(dossier, ".txt")
     idf = IDF(dossier)
@@ -291,4 +242,5 @@ def mots_repetes(fichier):
     return L
 
 
-#
+# 3.4 - Indiquer le(s) nom(s) du (des) président(s) qui a (ont) parlé de la « Nation » et celui qui l’a répété le plus de fois
+def apparition_mot(dossier, mot):

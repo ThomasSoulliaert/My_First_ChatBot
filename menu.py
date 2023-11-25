@@ -20,3 +20,6 @@ elif numero == 3:
         if mot not in liste3:
             liste3.append(mot)
     print(liste3)
+
+elif numero == 4:
+    liste = apparition_mot()
