@@ -78,8 +78,7 @@ dico_noms_prenoms_presidents = attribution_prenom(liste_noms_presidents_sans_dou
 print(liste_noms_presidents)
 
 
-# 1.4 - Convertir les textes des 8 fichiers en minuscules et stocker les contenus dans de nouveaux fichiers. 
-
+# 1.4 - Convertir les textes des 8 fichiers en minuscules et stocker les contenus dans de nouveaux fichiers.
 def convertir_minuscules(dossier_entree, dossier_sortie):
     # Créer un dossier de sortie s'il n'existe pas
     if not os.path.exists(dossier_sortie):
@@ -241,9 +240,18 @@ def TF_IDF2(dossier):
     return matrice
 
 matrice = TF_IDF2("./cleaned")
-print(matrice)
+for i in matrice:
+    print(i)
 
 
-
-
-
+# III - Fonctionnalités à développer
+# 3.1 - Afficher la liste des mots les moins importants dans le corpus de documents (TD-IDF = 0 dans tous les fichiers)
+def mots_non_importants(matrice, nb_fichiers):
+    L = []
+    for i in range(len(matrice)):
+        somme = 0
+        for j in range(1, nb_fichiers + 1):
+            somme += matrice[i][j]
+        if somme == 0:
+            L.append(matrice[i][0])
+    return L
