@@ -1,5 +1,5 @@
 # Projet Python - My first ChatBOT
-# Testy
+
 import os
 import math
 
@@ -9,6 +9,7 @@ def list_of_files(directory, extension):
         if filename.endswith(extension):
             files_names.append(filename)
     return files_names
+
 
 # Partie 1
 # 1.1 - Extraire les noms des présidents à partir des noms des fichiers texte fournis
@@ -29,17 +30,17 @@ liste_noms_presidents = extraire_noms_presidents("speeches")
 
 # Changer la liste principale pour éviter les doublons
 def liste_sans_doublons(liste):
-    L = []
+    nouvelle_liste = []
     
     # Utilisation des slices pour éviter les doublons
     for nom in liste:
-        if nom[:-1] not in L and nom[-1] in [str(i) for i in range (10)]:
-            L.append(nom[:-1])
+        if nom[:-1] not in nouvelle_liste and nom[-1] in [str(i) for i in range (10)]:
+            nouvelle_liste.append(nom[:-1])
             
-        elif nom not in L and nom[-1] not in [str(i) for i in range (10)]:
-            L.append(nom)
+        elif nom not in nouvelle_liste and nom[-1] not in [str(i) for i in range (10)]:
+            nouvelle_liste.append(nom)
             
-    return L
+    return nouvelle_liste
 
 # Appel de la fonction
 liste_noms_presidents_sans_doublons = liste_sans_doublons(liste_noms_presidents)
@@ -55,23 +56,19 @@ def attribution_prenom(liste):
         # Associez le nom à un prénom
         if nom == "Chirac":
             dictionnaire[nom] = "Jacques"
-            
         elif nom == "Giscard dEstaing":
             dictionnaire[nom] = "Valéry"
-            
         elif nom == "Hollande" or nom == "Mitterrand":
             dictionnaire[nom] = "François"
-            
         elif nom == "Macron":
             dictionnaire[nom] = "Emmanuel"
-            
         elif nom == "Sarkozy":
             dictionnaire[nom] = "Nicolas"
     
     return dictionnaire
 
 # Appel de la fonction
-dico_noms_prenoms_presidents = attribution_prenom(liste_noms_presidents_sans_doublons)
+dictionnaire_noms_prenoms_presidents = attribution_prenom(liste_noms_presidents_sans_doublons)
 
 
 # 1.3 - Afficher la liste des noms des présidents (sans doublons)
@@ -85,10 +82,10 @@ def convertir_minuscules(dossier_entree, dossier_sortie):
         os.makedirs(dossier_sortie)
 
     # Liste des fichiers texte dans le dossier d'entrée
-    fichiers = list_of_files(dossier_entree, ".txt")
+    file_list = list_of_files(dossier_entree, ".txt")
 
     # Conversion des fichiers texte en minuscules et sauvegarde dans le dossier de sortie
-    for fichier in fichiers:
+    for fichier in file_list:
         with open(os.path.join(dossier_entree, fichier), 'r') as file:
             contenu = file.read().lower()
 
@@ -106,7 +103,6 @@ def supprimer_ponctuation(dossier):
     # Suppression des virgules dans les fichiers texte
     for fichier in file_list:
         with open(os.path.join(dossier, fichier), 'r') as file:
-
             contenu = file.read()
 
             nouveau_contenu = ''
@@ -119,7 +115,7 @@ def supprimer_ponctuation(dossier):
         with open(os.path.join(dossier, fichier), 'w') as file_out:
             file_out.write(nouveau_contenu)
 
-# Appel de la fonction avec le dossier "cleaned"
+# Appel de la fonction
 supprimer_ponctuation("./cleaned")
 
 
@@ -129,7 +125,6 @@ def TF(fichier):
     # Création d'un dictionnnaire pour associer à chaque mot un nombre d'occurrence
     with open(f"./cleaned/{fichier}", "r") as f:
         liste_mots = f.read().split()
-
         dictionnaire = {}
 
         for mot in liste_mots:
@@ -139,15 +134,11 @@ def TF(fichier):
                 dictionnaire[mot] = 1
 
         return dictionnaire
-            
-# Appel de la fonction
-x = TF("Nomination_Macron.txt")
 
 
 # 2.2 - Dictionnaire associant à chaque mot son score IDF
 def IDF(dossier):
     file_list = list_of_files(dossier, ".txt")
-
     dictionnaire = {}
 
     for fichier in file_list:
@@ -165,8 +156,6 @@ def IDF(dossier):
 
 # Appel de la fonction
 score_IDF = IDF("./cleaned")
-#for i in score_IDF.items():
-   # print(i)
 
 
 # 2.3 - Méthode TF-IDF
@@ -190,8 +179,9 @@ def TF_IDF(dossier):
 
     return matrice
 
+# Appel de la fonction
 matrice = TF_IDF("./cleaned")
-print(matrice)
+#print(matrice)
 
 
 # III - Fonctionnalités à développer
@@ -224,6 +214,7 @@ def mots_importants(matrice):
                 ajouter_mot = True
         if ajouter_mot == True:
             liste.append(matrice[i][0])
+
     return liste
 
 
@@ -297,3 +288,22 @@ def premier_a_parler(dossier, mot_recherche):
             president = cle
 
     return f"Le premier président à parler de {mot_recherche} est {president} à l'indice {indice_min}"
+
+
+# 3.6 - Hormis les mots dits « non importants », liste de(s) mot(s) que tous les présidents ont évoqués
+def mots_evoques(dossier):
+    file_list = list_of_files(dossier, ".txt")
+    tf_reference = TF(file_list[0])
+    liste = []
+
+    for mot in tf_reference.keys():
+        score = 0
+        for fichier in file_list:
+            tf = TF(fichier)
+            if mot in tf.keys():
+                score += 1
+        if score == len(file_list):
+            liste.append(mot)
+
+    return f"La liste des mots évoqués par tous les présidents est : {liste}"
+

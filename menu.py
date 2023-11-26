@@ -1,7 +1,7 @@
 # Menu temporaire pour tester les fonctions
 from main import *
 
-numero = int(input("Saisir le numéro de la fonction: "))
+numero = int(input("Saisir le numéro de la question (fonctionnalités à développer) : "))
 matrice = TF_IDF("./cleaned")
 
 if numero == 1:
@@ -30,7 +30,8 @@ elif numero == 5:
     print(resultat)
 
 elif numero == 6:
-    print("")
+    resultat = mots_evoques("./cleaned")
+    print(resultat)
 
 else:
     print("Le numéro de l'exercice ne correspond pas")
