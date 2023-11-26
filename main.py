@@ -191,6 +191,7 @@ def TF_IDF(dossier):
     return matrice
 
 matrice = TF_IDF("./cleaned")
+print(matrice)
 
 
 # III - Fonctionnalités à développer
@@ -230,9 +231,9 @@ def mots_importants(matrice):
 def mots_repetes(fichier):
     tf = TF(fichier)
     score = 0
-    for occurences in tf.values():
-        if occurences > score:
-            score = occurences
+    for occurrences in tf.values():
+        if occurrences > score:
+            score = occurrences
 
     liste = []
     for mot in tf.keys():
@@ -247,6 +248,7 @@ def apparition_mot(dossier, mot_recherche):
     file_list = list_of_files(dossier, ".txt")
     L_noms_presidents = extraire_noms_presidents(dossier)
     dictionnaire = {}
+    liste = []
 
     for fichier in file_list:
         tf = TF(fichier)
@@ -254,4 +256,44 @@ def apparition_mot(dossier, mot_recherche):
             nom_president = fichier.split("_")[1].split(".")[0]
             dictionnaire[nom_president] = tf[mot_recherche]
 
-    return dictionnaire
+    for president in dictionnaire.keys():
+        liste.append(president)
+    liste_president = liste_sans_doublons(liste)
+
+    score = 0
+    president = ""
+    for occurrences in dictionnaire.values():
+        if occurrences > score:
+            score = occurrences
+    for cle, val in dictionnaire.items():
+        if val == score:
+            president = cle
+
+    return (f"La liste des président à parler de {mot_recherche} est : {liste_president}",
+            f"Le président qui a utilisé ce mot le plus de fois est : {president}")
+
+
+# 3.5 - Indiquer le premier président à parler du climat et/ou de l’écologie
+def premier_a_parler(dossier, mot_recherche):
+    file_list = list_of_files(dossier, ".txt")
+    dictionnaire = {}
+
+    for fichier in file_list:
+        tf = TF(fichier)
+        if mot_recherche in tf.keys():
+            cles = list(tf.keys())
+            indice_cle = cles.index(mot_recherche)
+
+            nom_president = fichier.split("_")[1].split(".")[0]
+            dictionnaire[nom_president] = indice_cle
+
+    indice_min = next(iter(dictionnaire.values()), None)
+    president = ""
+    for indice in dictionnaire.values():
+        if indice < indice_min:
+            indice_min = indice
+    for cle, val in dictionnaire.items():
+        if val == indice_min:
+            president = cle
+
+    return f"Le premier président à parler de {mot_recherche} est {president} à l'indice {indice_min}"

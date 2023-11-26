@@ -24,3 +24,13 @@ elif numero == 3:
 elif numero == 4:
     resultat = apparition_mot("./cleaned", "nation")
     print(resultat)
+
+elif numero == 5:
+    resultat = premier_a_parler("./cleaned", "climat")
+    print(resultat)
+
+elif numero == 6:
+    print("")
+
+else:
+    print("Le numéro de l'exercice ne correspond pas")
