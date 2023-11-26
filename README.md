@@ -94,11 +94,4 @@ Pour chaque mot, elle vérifie s'il est présent dans la fréquence d'apparition
 
 
 
-Notice d'utilisation pour utiliser le code:
-
-
-Liste des éventuelles dépendances à installer:
-
-
-Liste des bugs connus:
 
