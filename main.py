@@ -151,6 +151,7 @@ def IDF(dossier):
 
     for key, val in dictionnaire.items():
         dictionnaire[key] = math.log(len(file_list) / val)
+        # dictionnaire[key] = math.log10((len(file_list) / val) + 1)
 
     return dictionnaire
 
@@ -181,7 +182,7 @@ def TF_IDF(dossier):
 
 # Appel de la fonction
 matrice = TF_IDF("./cleaned")
-#print(matrice)
+print(matrice)
 
 
 # III - Fonctionnalités à développer
