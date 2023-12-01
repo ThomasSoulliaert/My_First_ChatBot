@@ -151,7 +151,7 @@ def IDF(dossier):
 
     for key, val in dictionnaire.items():
         dictionnaire[key] = math.log(len(file_list) / val)
-        # dictionnaire[key] = math.log10((len(file_list) / val) + 1)
+        #dictionnaire[key] = math.log10((len(file_list) / val) + 1)
 
     return dictionnaire
 
