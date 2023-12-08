@@ -152,7 +152,6 @@ def IDF(dossier):
 
     for key, val in dictionnaire.items():
         dictionnaire[key] = math.log10(len(file_list) / val)
-        #dictionnaire[key] = math.log10((len(file_list) / val) + 1)
 
     return dictionnaire
 
@@ -327,7 +326,8 @@ def transformer_en_liste_de_mots_une_chaine(chaine):
 
 
 # 2 - Recherche de mots de la question dans le Corpus
-def recherche_mots_corpus(liste, dossier):
+def recherche_mots_corpus(question, dossier):
+    liste = transformer_en_liste_de_mots_une_chaine(question)
     liste_mots_du_corpus = []
     matrice = TF_IDF(dossier)
 
@@ -363,3 +363,71 @@ def TF_IDF_2(dossier):
 matrice2 = TF_IDF_2("./cleaned")
 for i in range(len(matrice2)):
     print(matrice2[i])
+
+def question_TF_IDF(question, dossier):
+    liste = transformer_en_liste_de_mots_une_chaine(question)
+    idf = IDF(dossier)
+    tf_question = {}
+
+    for mot in liste:
+        score = 0
+        for i in liste:
+            if i == mot:
+                score += 1
+        tf_question[mot] = score/len(liste)
+
+    liste_tf_idf_question = []
+    for mot in idf:
+        score = 0
+        if mot in liste:
+            score = tf_question[mot] * idf[mot]
+            liste_tf_idf_question.append(score)
+        else:
+            liste_tf_idf_question.append(0)
+
+    return liste_tf_idf_question
+
+liste1 = question_TF_IDF("Bonjour, comment ça va aujourd'hui ?", "./cleaned")
+print(" ")
+print(liste1)
+
+"""    
+tf = freqeunce dans la question
+idf = on l'a '
+=< tf idf du mot de la question
+ 
+def TF_2(liste):
+    dictionnaire = {}
+
+    for mot in liste:
+        if mot in dictionnaire:
+            dictionnaire[mot] += 1
+        else:
+            dictionnaire[mot] = 1
+
+    for mot in 
+    return dictionnaire
+"""
+
+
+
+
+def vecteur_TF_IDF(liste, dossier):
+    file_list = list_of_files(dossier, ".txt")
+    idf = IDF(dossier)
+    tf_question = {}
+    matrice = []
+
+    for fichier in file_list:
+        liste = []
+
+        for mot in idf:
+            tf = TF(fichier)
+            for j in tf:
+                if j not in tf_question:
+                    tf_question[j] = 0
+
+            for k in tf:
+                if k in liste:
+                    tf[k] += 1
+
