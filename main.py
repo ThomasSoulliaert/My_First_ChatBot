@@ -327,4 +327,17 @@ def transformer_en_liste_de_mots_une_chaine(chaine):
 
 
 # 2 - Recherche de mots de la question dans le Corpus
-def recherche_mots_corpus()
+def recherche_mots_corpus(liste, dossier):
+    liste_mots_du_corpus = []
+    matrice = TF_IDF(dossier)
+
+    for mot in liste:
+        for ligne in matrice:
+            if mot in ligne:
+                liste_mots_du_corpus.append(mot)
+
+    return liste_mots_du_corpus
+
+
+# 3 - Calcul du vecteur TF-IDF pour les termes de la question
+def
