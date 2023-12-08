@@ -167,7 +167,7 @@ def TF_IDF(dossier):
 
     matrice = []
     for mot in idf:
-        liste = [mot]
+        liste = [mot] # On ajoute le mot à la liste pour avoir la colonne n°0 avec tous les mots du corpus
         for fichier in file_list:
             tf = TF(fichier)
 
@@ -182,8 +182,8 @@ def TF_IDF(dossier):
     return matrice
 
 # Appel de la fonction
-matrice = TF_IDF("./cleaned")
-print(matrice)
+# matrice = TF_IDF("./cleaned")
+# print(matrice)
 
 
 # III - Fonctionnalités à développer
@@ -340,4 +340,26 @@ def recherche_mots_corpus(liste, dossier):
 
 
 # 3 - Calcul du vecteur TF-IDF pour les termes de la question
-def
+def TF_IDF_2(dossier):
+    file_list = list_of_files(dossier, ".txt")
+    idf = IDF(dossier)
+
+    matrice = []
+    for fichier in file_list:
+        liste = []
+        for mot in idf:
+            tf = TF(fichier)
+
+            if mot in tf:
+                tf_idf = tf[mot] * idf[mot]
+                liste.append(tf_idf)
+            else:
+                liste.append(0)
+
+        matrice.append(liste)
+
+    return matrice
+
+matrice2 = TF_IDF_2("./cleaned")
+for i in range(len(matrice2)):
+    print(matrice2[i])
