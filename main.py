@@ -11,7 +11,8 @@ def list_of_files(directory, extension):
     return files_names
 
 
-# Partie 1
+# PARTIE 1
+# I - Fonctionnalités de base
 # 1.1 - Extraire les noms des présidents à partir des noms des fichiers texte fournis
 def extraire_noms_presidents(dossier):
     # code Python utilisé pour parcourir la liste des fichiers d’une extension donnée et dans un répertoire donné
@@ -150,7 +151,7 @@ def IDF(dossier):
                 dictionnaire[i] = 1
 
     for key, val in dictionnaire.items():
-        dictionnaire[key] = math.log(len(file_list) / val)
+        dictionnaire[key] = math.log10(len(file_list) / val)
         #dictionnaire[key] = math.log10((len(file_list) / val) + 1)
 
     return dictionnaire
@@ -308,3 +309,22 @@ def mots_evoques(dossier):
 
     return f"La liste des mots évoqués par tous les présidents est : {liste}"
 
+
+# PARTIE 2
+# 1 - Tokenisation de la question
+def transformer_en_liste_de_mots_une_chaine(chaine):
+    liste = []
+    mot = ''
+
+    for caractere in chaine:
+        if caractere.isalpha():
+            mot += caractere.lower()
+        elif mot:
+            liste.append(mot)
+            mot = ''
+
+    return liste
+
+
+# 2 - Recherche de mots de la question dans le Corpus
+def recherche_mots_corpus()
