@@ -452,7 +452,7 @@ def generation_reponse(question, dossier):
     document = similarite_documents_et_vecteurs(matrice, vecteur, file_list)
     # Renvoie le document que l'on va exploiter
 
-
+    #test
 
 
 
