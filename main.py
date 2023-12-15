@@ -340,7 +340,7 @@ def recherche_mots_corpus(question, dossier):
 
 
 # 3 - Calcul du vecteur TF-IDF pour les termes de la question
-def TF_IDF_2(dossier):
+def TF_IDF_2(dossier): # 2ème fonction TF_IDF pour avoir 8 lignes correspondant aux 8 documents et n colonnes correspondant aux n mots du corpus
     file_list = list_of_files(dossier, ".txt")
     idf = IDF(dossier)
 
@@ -364,7 +364,7 @@ matrice2 = TF_IDF_2("./cleaned")
 for i in range(len(matrice2)):
     print(matrice2[i])
 
-def question_TF_IDF(question, dossier):
+def vecteur_TF_IDF(question, dossier):
     liste = transformer_en_liste_de_mots_une_chaine(question)
     idf = IDF(dossier)
     tf_question = {}
@@ -387,47 +387,34 @@ def question_TF_IDF(question, dossier):
 
     return liste_tf_idf_question
 
-liste1 = question_TF_IDF("Bonjour, comment ça va aujourd'hui ?", "./cleaned")
+liste1 = vecteur_TF_IDF("Bonjour, comment ça va aujourd'hui ?", "./cleaned")
 print(" ")
 print(liste1)
 
-"""    
-tf = freqeunce dans la question
-idf = on l'a '
-=< tf idf du mot de la question
- 
-def TF_2(liste):
-    dictionnaire = {}
 
-    for mot in liste:
-        if mot in dictionnaire:
-            dictionnaire[mot] += 1
-        else:
-            dictionnaire[mot] = 1
+# 4 - Calcul de la similarité
+def produit_scalaire(vecteur1, vecteur2):
+    if len(vecteur1) != len(vecteur2):
+        return "Les vecteurs ne sont pas de la même longueur, on ne peut pas calculer le produit scalaire."
 
-    for mot in 
-    return dictionnaire
-"""
+    somme = 0
+    for i in range(len(vecteur1)):
+        somme += vecteur1[i] * vecteur2[i]
 
+    return somme
 
+def norme_vecteur(vecteur):
+    somme = 0
+    for i in range(len(vecteur)):
+        somme += (vecteur[i]) ** 2
 
+    resultat = math.sqrt(somme)
+    return resultat
 
-def vecteur_TF_IDF(liste, dossier):
-    file_list = list_of_files(dossier, ".txt")
-    idf = IDF(dossier)
-    tf_question = {}
-    matrice = []
+def calcul_similarité(vecteur1, vecteur2):
+    produit_scalaire_v1v2 = produit_scalaire(vecteur1, vecteur2)
+    norme1 = norme_vecteur(vecteur1)
+    norme2 = norme_vecteur(vecteur2)
 
-    for fichier in file_list:
-        liste = []
-
-        for mot in idf:
-            tf = TF(fichier)
-            for j in tf:
-                if j not in tf_question:
-                    tf_question[j] = 0
-
-            for k in tf:
-                if k in liste:
-                    tf[k] += 1
-
+    resultat = produit_scalaire_v1v2 / (norme1 * norme2)
+    return resultat

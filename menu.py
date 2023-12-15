@@ -1,4 +1,4 @@
-# Menu temporaire pour tester les fonctions
+# Menu temporaire de la partie 1 pour tester les fonctions
 from main import *
 
 numero = int(input("Saisir le numéro de la question (fonctionnalités à développer) : "))
