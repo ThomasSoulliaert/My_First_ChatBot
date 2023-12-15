@@ -433,3 +433,6 @@ def similarite_documents_et_vecteurs(matrice, vecteur):
 
 # Appel de la fonction
 print(similarite_documents_et_vecteurs(matrice2, vecteur_tf_idf))
+
+
+# 5 - Calcul du document le plus pertinent
