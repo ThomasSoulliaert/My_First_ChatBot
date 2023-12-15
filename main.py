@@ -393,6 +393,7 @@ print(liste1)
 
 
 # 4 - Calcul de la similarité
+#Fonction pour calculer le produit scalaire de deux vecteurs :
 def produit_scalaire(vecteur1, vecteur2):
     if len(vecteur1) != len(vecteur2):
         return "Les vecteurs ne sont pas de la même longueur, on ne peut pas calculer le produit scalaire."
@@ -403,6 +404,7 @@ def produit_scalaire(vecteur1, vecteur2):
 
     return somme
 
+#Fonction pour calculer la norme d'un vecteur :
 def norme_vecteur(vecteur):
     somme = 0
     for i in range(len(vecteur)):
@@ -411,6 +413,7 @@ def norme_vecteur(vecteur):
     resultat = math.sqrt(somme)
     return resultat
 
+#Fonction pour calculer la similarité :
 def calcul_similarité(vecteur1, vecteur2):
     produit_scalaire_v1v2 = produit_scalaire(vecteur1, vecteur2)
     norme1 = norme_vecteur(vecteur1)
