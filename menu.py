@@ -2,7 +2,7 @@
 from main import *
 
 numero = int(input("Saisir le numéro de la question (fonctionnalités à développer) : "))
-matrice = TF_IDF("./cleaned")
+matrice = TF_IDF_Test("./cleaned")
 
 if numero == 1:
     liste = mots_non_importants(matrice)

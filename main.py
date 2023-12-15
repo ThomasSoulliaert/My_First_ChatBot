@@ -10,6 +10,15 @@ def list_of_files(directory, extension):
             files_names.append(filename)
     return files_names
 
+def cle_associee_a_val_max_dictionnaire(dictionnaire): # Fonction qui renvoie la clé associée à la plus grande valeur du dictionnnaire
+    max = 0
+    document = ""
+    for cle, val in dictionnaire.items():
+        if max < val:
+            max = val
+            document = cle
+    return document
+
 
 # PARTIE 1
 # I - Fonctionnalités de base
@@ -160,7 +169,7 @@ score_IDF = IDF("./cleaned")
 
 
 # 2.3 - Méthode TF-IDF
-def TF_IDF(dossier):
+def TF_IDF_Test(dossier):
     file_list = list_of_files(dossier, ".txt")
     idf = IDF(dossier)
 
@@ -181,7 +190,7 @@ def TF_IDF(dossier):
     return matrice
 
 # Appel de la fonction
-# matrice = TF_IDF("./cleaned")
+# matrice = TF_IDF_Test("./cleaned")
 # print(matrice)
 
 
@@ -279,16 +288,8 @@ def premier_a_parler(dossier, mot_recherche):
             nom_president = fichier.split("_")[1].split(".")[0]
             dictionnaire[nom_president] = indice_cle
 
-    indice_min = next(iter(dictionnaire.values()), None)
-    president = ""
-    for indice in dictionnaire.values():
-        if indice < indice_min:
-            indice_min = indice
-    for cle, val in dictionnaire.items():
-        if val == indice_min:
-            president = cle
-
-    return f"Le premier président à parler de {mot_recherche} est {president} à l'indice {indice_min}"
+    president = cle_associee_a_val_max_dictionnaire(dictionnaire)
+    return f"Le premier président à parler de {mot_recherche} est {president}"
 
 
 # 3.6 - Hormis les mots dits « non importants », liste de(s) mot(s) que tous les présidents ont évoqués
@@ -321,6 +322,8 @@ def transformer_en_liste_de_mots_une_chaine(chaine):
         elif mot:
             liste.append(mot)
             mot = ''
+    if mot not in liste and mot != "":
+        liste.append(mot)
 
     return liste
 
@@ -329,7 +332,7 @@ def transformer_en_liste_de_mots_une_chaine(chaine):
 def recherche_mots_corpus(question, dossier):
     liste = transformer_en_liste_de_mots_une_chaine(question)
     liste_mots_du_corpus = []
-    matrice = TF_IDF(dossier)
+    matrice = TF_IDF_Test(dossier)
 
     for mot in liste:
         for ligne in matrice:
@@ -340,7 +343,7 @@ def recherche_mots_corpus(question, dossier):
 
 
 # 3 - Calcul du vecteur TF-IDF pour les termes de la question
-def TF_IDF_2(dossier): # 2ème fonction TF_IDF pour avoir 8 lignes correspondant aux 8 documents et n colonnes correspondant aux n mots du corpus
+def TF_IDF(dossier): # 2ème fonction TF_IDF pour avoir 8 lignes correspondant aux 8 documents et n colonnes correspondant aux n mots du corpus
     file_list = list_of_files(dossier, ".txt")
     idf = IDF(dossier)
 
@@ -360,9 +363,9 @@ def TF_IDF_2(dossier): # 2ème fonction TF_IDF pour avoir 8 lignes correspondant
 
     return matrice
 
-matrice2 = TF_IDF_2("./cleaned")
-for i in range(len(matrice2)):
-    print(matrice2[i])
+matrice = TF_IDF("./cleaned")
+for i in range(len(matrice)):
+    print(matrice[i])
 
 def vecteur_TF_IDF(question, dossier):
     liste = transformer_en_liste_de_mots_une_chaine(question)
@@ -387,9 +390,8 @@ def vecteur_TF_IDF(question, dossier):
 
     return liste_tf_idf_question
 
-vecteur_tf_idf = vecteur_TF_IDF("Bonjour, comment allez-vous aujourd'hui ?", "./cleaned")
-print(" ")
-print(vecteur_tf_idf)
+# Appel de la fonction
+question_test = vecteur_TF_IDF("Bonjour, comment allez-vous aujourd'hui ?", "./cleaned")
 
 
 # 4 - Calcul de la similarité
@@ -411,7 +413,7 @@ def norme_vecteur(vecteur):
     resultat = math.sqrt(somme)
     return resultat
 
-def calcul_similarité(vecteur1, vecteur2):
+def calcul_similarite(vecteur1, vecteur2):
     produit_scalaire_v1v2 = produit_scalaire(vecteur1, vecteur2)
     norme1 = norme_vecteur(vecteur1)
     norme2 = norme_vecteur(vecteur2)
@@ -419,20 +421,40 @@ def calcul_similarité(vecteur1, vecteur2):
     resultat = produit_scalaire_v1v2 / (norme1 * norme2)
     return resultat
 
-def similarite_documents_et_vecteurs(matrice, vecteur):
-    dictionnaire = {}
-    for i in range(len(matrice)):
-        resultat = calcul_similarité(matrice[i], vecteur_tf_idf)
-        dictionnaire[i + 1] = resultat
-
-    max = 0
-    for cle, val in dictionnaire.items():
-        if max < val:
-            max = cle
-    return f"Le document avec qui la question obtient la plus haute valeur de similarité est le document {max}"
-
-# Appel de la fonction
-print(similarite_documents_et_vecteurs(matrice2, vecteur_tf_idf))
-
 
 # 5 - Calcul du document le plus pertinent
+def similarite_documents_et_vecteurs(matrice, vecteur, liste):
+    dictionnaire = {}
+    for i in range(len(matrice)):
+        resultat = calcul_similarite(matrice[i], vecteur)
+        dictionnaire[liste[i]] = resultat
+
+    return cle_associee_a_val_max_dictionnaire(dictionnaire)
+
+# Appel de la fonction
+liste_des_fichiers = list_of_files("./cleaned", ".txt")
+
+question1 = "Peux-tu me dire comment une nation peut-elle prendre soin du climat ?"
+question2 = "Quelle est le plus important pour la Nation ?"
+
+Q1 = vecteur_TF_IDF(question1, "./cleaned")
+Q2 = vecteur_TF_IDF(question2, "./cleaned")
+
+print(similarite_documents_et_vecteurs(matrice, Q1, liste_des_fichiers))
+print(similarite_documents_et_vecteurs(matrice, Q2, liste_des_fichiers))
+
+
+# 6 - Génération d’une réponse
+def generation_reponse(question, dossier):
+    file_list = list_of_files(dossier, ".txt")
+    vecteur = vecteur_TF_IDF(question, dossier)
+    matrice = TF_IDF(dossier)
+    document = similarite_documents_et_vecteurs(matrice, vecteur, file_list)
+    # Renvoie le document que l'on va exploiter
+
+
+
+
+
+# Appel de la fonction
+print(generation_reponse("Comment une nation peut-elle prendre soin du climat ?", "./cleaned"))
