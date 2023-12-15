@@ -436,3 +436,16 @@ print(similarite_documents_et_vecteurs(matrice2, vecteur_tf_idf))
 
 
 # 5 - Calcul du document le plus pertinent
+# A modifier 
+def trouver_document_pertinent(matrice_tfidf_corpus, vecteur_tfidf_question, noms_fichiers):
+
+    # Calculer la similarité cosinus avec chaque vecteur du corpus
+    similarites = [resultat(vecteur_tfidf_question, vecteur_corpus) for vecteur_corpus in matrice_tfidf_corpus]
+
+    # Trouver l'index de la valeur maximale (document le plus pertinent)
+    index_document_pertinent = resultat.index(max(resultat))
+
+    # Retourner le nom du document correspondant
+    nom_document_pertinent = noms_fichiers[index_document_pertinent]
+
+    return nom_document_pertinent
