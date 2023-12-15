@@ -13,6 +13,8 @@ Noms des professeurs:
 
 Fonctionnalités principales : 
 
+Partie I
+
 # 1.1 - Extraire les noms des présidents à partir des noms des fichiers texte fournis
 
 Pour la première fonction, nous avons extrait les noms des présidents à partir des noms des fichiers texte fournis. La fonction s’appelle “extraire_noms_presidents” et prend en paramètre un dossier. Nous avons initialisé une liste “noms_presidents”, puis nous parcourons chaque discours dans le dossier “spechees”. Si le type du fichier se termine par “.txt”, alors nous utilisons les “split” pour délimiter la partie du titre du fichier qui nous intéresse. Le [1] sert à prendre la partie après le caractère indiqué (ici, “_”) et le [0] sert à prendre la partie avant le caractère indiqué (ici, le “.”). Enfin, nous ajoutons ce que nous venons de délimiter à la liste “noms_presidents” et nous renvoyons la liste. 
@@ -91,6 +93,38 @@ La fonction premier_a_parler a pour objectif d'indiquer le premier président à
 
 L'objectif de la fonction "mots_evoques" est de lister les mots que tous les présidents ont évoqués, sauf les mots "non importants" (ceux avec un score TF-IDF de 0 dans tous les fichiers). La fonction prend en paramètre le nom du dossier (dossier) contenant les fichiers sur lesquels la recherche se base. Elle utilise la fonction  "list_of_files" pour obtenir la liste des fichiers du dossier. Elle utilise la fonction TF pour obtenir la fréquence d'apparition de chaque mot dans le premier fichier de la liste (file_list[0]), qui sert de référence. Elle initialise une liste vide (liste) qui stockera les mots évoqués par par tous les présidents. Elle parcourt chaque mot dans le dictionnaire de fréquence de référence. 
 Pour chaque mot, elle vérifie s'il est présent dans la fréquence d'apparition de chaque président (dans chaque fichier du dossier). Si le mot est présent dans tous les fichiers, elle l'ajoute à la liste des mots évoqués par tous les présidents et retourne la liste.
+
+
+
+
+Partie II
+
+# 1 - Tokenisation de la question
+
+
+La fonction "transformer_en_liste_de_mots_une_chaine" a pour onjectif principal de prendre une chaîine de caractères en entrée et de renvoyer une liste contenant tous les mots présents dasns cette cahîne.
+
+Dans cette fonction, on initialise d'abord une liste vide "liste = []".
+Cette liste va contenir les mots extraits de la chaîne, et une chaîne de caractères vide (mot) qui servira à construire les mots au fur et à mesure du parocurs de la chaîne;
+La fonction parcourt chaque caractère de la chaîne d'entrée à l'aide de la boucle 'for'.
+
+On vérifie ensuite si le caractère est alphabétique (s'il se situe entre 'a' et 'z' ou 'A' et 'Z') à l'aide de 'isalpha'. Si le caractère est alphabétique, il est ajouté à la fin du mot en cours de contsruction (mot) et tous les caractères alphabétiques sont convertis en minuscule avec 'lower'. Puis on retounrne la liste à la fin.
+
+
+# 2 - Recherche de mots de la question dans le Corpus
+
+La fonction "recherche_mots_corpus" commence par appeler de la fonction "transformer_en_liste_de_mots_une_chaine(question)", qui transforme la chaine de caractères de la question en une liste de mots.
+Ensuite la fonction crée une matrice TF IDF à partir du corpus en appelant la focntion TF_IDF(dossier).
+La fonction parcourt chaque mot de la liste obtenue à partir de la question (liste) et parcourt ensuite chque ligne de la matrice TF-IDF. Si le mot est préent dans une ligne d ela matrice, il est ajouté à la liste liste_mots_du_corpus.
+La fonction retourne la liste liste_mots_du_corpus qui contient le smots de la question qui sont présent.
+
+# 3 - Calcul de vecteur TF-IDF pour les termes de la question
+
+La fonction "TF_IDF_2" commence par obtenir une liste de fichiers texte présents dans le dossier spéifié en appelant la fonction list_of_files(dossier, ".txt"). 
+
+
+
+
 
 
 
