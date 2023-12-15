@@ -421,3 +421,19 @@ def calcul_similarité(vecteur1, vecteur2):
 
     resultat = produit_scalaire_v1v2 / (norme1 * norme2)
     return resultat
+
+
+
+#Sah je suis pas sur que ca marche correctement, à verifier par le chef Thomas
+def trouver_document_pertinent(matrice_tfidf_corpus, vecteur_tfidf_question, noms_fichiers):
+    
+    # Calculer la similarité cosinus avec chaque vecteur du corpus
+    similarites = [resultat(vecteur_tfidf_question, vecteur_corpus) for vecteur_corpus in matrice_tfidf_corpus]
+
+    # Trouver l'index de la valeur maximale (document le plus pertinent)
+    index_document_pertinent = resultat.index(max(resultat))
+
+    # Retourner le nom du document correspondant
+    nom_document_pertinent = noms_fichiers[index_document_pertinent]
+
+    return nom_document_pertinent
