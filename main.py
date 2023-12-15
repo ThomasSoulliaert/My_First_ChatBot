@@ -387,9 +387,9 @@ def vecteur_TF_IDF(question, dossier):
 
     return liste_tf_idf_question
 
-liste1 = vecteur_TF_IDF("Bonjour, comment ça va aujourd'hui ?", "./cleaned")
+vecteur_tf_idf = vecteur_TF_IDF("Bonjour, comment allez-vous aujourd'hui ?", "./cleaned")
 print(" ")
-print(liste1)
+print(vecteur_tf_idf)
 
 
 # 4 - Calcul de la similarité
@@ -418,3 +418,18 @@ def calcul_similarité(vecteur1, vecteur2):
 
     resultat = produit_scalaire_v1v2 / (norme1 * norme2)
     return resultat
+
+def similarite_documents_et_vecteurs(matrice, vecteur):
+    dictionnaire = {}
+    for i in range(len(matrice)):
+        resultat = calcul_similarité(matrice[i], vecteur_tf_idf)
+        dictionnaire[i + 1] = resultat
+
+    max = 0
+    for cle, val in dictionnaire.items():
+        if max < val:
+            max = cle
+    return f"Le document avec qui la question obtient la plus haute valeur de similarité est le document {max}"
+
+# Appel de la fonction
+print(similarite_documents_et_vecteurs(matrice2, vecteur_tf_idf))
