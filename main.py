@@ -131,9 +131,9 @@ supprimer_ponctuation("./cleaned")
 
 # II - La méthode TF-IDF
 # 2.1 - Associer à chaque mot le nombre de fois qu’il apparait dans la chaîne de caractères
-def TF(fichier):
+def TF(fichier, dossier):
     # Création d'un dictionnnaire pour associer à chaque mot un nombre d'occurrence
-    with open(f"./cleaned/{fichier}", "r") as f:
+    with open(f"{dossier}/{fichier}", "r") as f:
         liste_mots = f.read().split()
         dictionnaire = {}
 
@@ -152,7 +152,7 @@ def IDF(dossier):
     dictionnaire = {}
 
     for fichier in file_list:
-        nombre_mots = TF(fichier)
+        nombre_mots = TF(fichier, dossier)
         for i in nombre_mots:
             if i in dictionnaire:
                 dictionnaire[i] += 1
@@ -177,7 +177,7 @@ def TF_IDF_Test(dossier):
     for mot in idf:
         liste = [mot] # On ajoute le mot à la liste pour avoir la colonne n°0 avec tous les mots du corpus
         for fichier in file_list:
-            tf = TF(fichier)
+            tf = TF(fichier, dossier)
 
             if mot in tf:
                 tf_idf = tf[mot] * idf[mot]
@@ -229,8 +229,8 @@ def mots_importants(matrice):
 
 
 # 3.3 - Indiquer le(s) mot(s) le(s) plus répété(s) par un président (dans le test, Chirac)
-def mots_repetes(fichier):
-    tf = TF(fichier)
+def mots_repetes(fichier, dossier):
+    tf = TF(fichier, dossier)
     score = 0
     for occurrences in tf.values():
         if occurrences > score:
@@ -252,7 +252,7 @@ def apparition_mot(dossier, mot_recherche):
     liste = []
 
     for fichier in file_list:
-        tf = TF(fichier)
+        tf = TF(fichier, dossier)
         if mot_recherche in tf.keys():
             nom_president = fichier.split("_")[1].split(".")[0]
             dictionnaire[nom_president] = tf[mot_recherche]
@@ -280,7 +280,7 @@ def premier_a_parler(dossier, mot_recherche):
     dictionnaire = {}
 
     for fichier in file_list:
-        tf = TF(fichier)
+        tf = TF(fichier, dossier)
         if mot_recherche in tf.keys():
             cles = list(tf.keys())
             indice_cle = cles.index(mot_recherche)
@@ -295,13 +295,13 @@ def premier_a_parler(dossier, mot_recherche):
 # 3.6 - Hormis les mots dits « non importants », liste de(s) mot(s) que tous les présidents ont évoqués
 def mots_evoques(dossier):
     file_list = list_of_files(dossier, ".txt")
-    tf_reference = TF(file_list[0])
+    tf_reference = TF(file_list[0], dossier)
     liste = []
 
     for mot in tf_reference.keys():
         score = 0
         for fichier in file_list:
-            tf = TF(fichier)
+            tf = TF(fichier, dossier)
             if mot in tf.keys():
                 score += 1
         if score == len(file_list):
@@ -351,7 +351,7 @@ def TF_IDF(dossier): # 2ème fonction TF_IDF pour avoir 8 lignes correspondant a
     for fichier in file_list:
         liste = []
         for mot in idf:
-            tf = TF(fichier)
+            tf = TF(fichier, dossier)
 
             if mot in tf:
                 tf_idf = tf[mot] * idf[mot]
@@ -381,7 +381,6 @@ def vecteur_TF_IDF(question, dossier):
 
     liste_tf_idf_question = []
     for mot in idf:
-        score = 0
         if mot in liste:
             score = tf_question[mot] * idf[mot]
             liste_tf_idf_question.append(score)
@@ -432,6 +431,7 @@ def similarite_documents_et_vecteurs(matrice, vecteur, liste):
     return cle_associee_a_val_max_dictionnaire(dictionnaire)
 
 # Appel de la fonction
+"""
 liste_des_fichiers = list_of_files("./cleaned", ".txt")
 
 question1 = "Peux-tu me dire comment une nation peut-elle prendre soin du climat ?"
@@ -442,19 +442,53 @@ Q2 = vecteur_TF_IDF(question2, "./cleaned")
 
 print(similarite_documents_et_vecteurs(matrice, Q1, liste_des_fichiers))
 print(similarite_documents_et_vecteurs(matrice, Q2, liste_des_fichiers))
-
+"""
 
 # 6 - Génération d’une réponse
-def generation_reponse(question, dossier):
+def generation_reponse(question, dossier, dossier_origine):
     file_list = list_of_files(dossier, ".txt")
     vecteur = vecteur_TF_IDF(question, dossier)
     matrice = TF_IDF(dossier)
     document = similarite_documents_et_vecteurs(matrice, vecteur, file_list)
     # Renvoie le document que l'on va exploiter
 
-    #test
+    # On cherche le mot ayant le TF-IDF le plus élevé
+    # On réutilise la fonction vecteur_TF_IDF mais on créé un dictionnaire au lieu d'une liste pour pourvoir récupérer la clé
+    liste = transformer_en_liste_de_mots_une_chaine(question)
+    idf = IDF(dossier)
+    tf_question = {}
+    for mot in liste:
+        score = 0
+        for i in liste:
+            if i == mot:
+                score += 1
+        tf_question[mot] = score/len(liste)
+    dictionnaire = {}
+    for mot in idf:
+        if mot in liste:
+            dictionnaire[mot] = tf_question[mot] * idf[mot]
+        else:
+            dictionnaire[mot] = 0
 
+    # On recherche le mot ayant le TF-IDF le plus élevé
+    mot_important = cle_associee_a_val_max_dictionnaire(dictionnaire)
 
+    # On recherhe le mot dans le document pour pouvoir renvoyer la phrase qui lui est associée
+    with open(f"{dossier_origine}/{document}", "r") as file:
+        contenu = file.read()
+
+        separateurs = ['.', '!', '?']
+        phrases = []
+        phrase_actuelle = ""
+        for caractere in contenu:
+            phrase_actuelle += caractere
+            if caractere in separateurs:
+                phrases.append(phrase_actuelle)
+                phrase_actuelle = ""
+
+        for phrase in phrases:
+            if mot_important in phrase:
+                return phrase
 
 # Appel de la fonction
-print(generation_reponse("Comment une nation peut-elle prendre soin du climat ?", "./cleaned"))
+print(generation_reponse("Comment une nation peut-elle prendre soin du climat ?", "./cleaned", "./speeches"))

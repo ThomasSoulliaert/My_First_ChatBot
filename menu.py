@@ -13,8 +13,8 @@ elif numero == 2:
     print(liste)
 
 elif numero == 3:
-    liste1 = mots_repetes("./Nomination_Chirac1.txt")
-    liste2 = mots_repetes("./Nomination_Chirac1.txt")
+    liste1 = mots_repetes("./Nomination_Chirac1.txt", "./cleaned")
+    liste2 = mots_repetes("./Nomination_Chirac1.txt", "./cleaned")
     liste3 = liste1
     for mot in liste2:
         if mot not in liste3:
