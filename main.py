@@ -71,7 +71,7 @@ def attribution_prenom(liste):
 # Appel de la fonction
 liste_noms_presidents = extraire_noms_presidents("./speeches")
 liste_noms_presidents_sans_doublons = liste_sans_doublons(liste_noms_presidents)
-print("La liste des présidents est : ", liste_noms_presidents_sans_doublons)
+print("La liste des présidents est :", liste_noms_presidents_sans_doublons)
 
 
 # 1.4 - Convertir les textes des 8 fichiers en minuscules et stocker les contenus dans de nouveaux fichiers.
@@ -90,6 +90,7 @@ def convertir_minuscules(dossier_entree, dossier_sortie):
 
         with open(os.path.join(dossier_sortie, fichier), 'w') as file_out:
             file_out.write(contenu)
+
 #Appel de la fonction
 convertir_minuscules("./speeches", "./cleaned")
 
@@ -111,6 +112,7 @@ def supprimer_ponctuation(dossier):
 
         with open(os.path.join(dossier, fichier), 'w') as file_out:
             file_out.write(nouveau_contenu)
+
 # Appel de la fonction
 supprimer_ponctuation("./cleaned")
 
@@ -229,8 +231,11 @@ def apparition_mot(dossier, mot_recherche):
         liste.append(president)
     liste_president = liste_sans_doublons(liste)
     president = cle_associee_a_val_max_dictionnaire(dictionnaire)
-    return (f"La liste des président à parler de {mot_recherche} est : {liste_president}",
-            f"Le président qui a utilisé ce mot le plus de fois est : {president}")
+    if president != "":
+        return (f"La liste des président à parler de {mot_recherche} est : {liste_president}",
+                f"Le président qui a utilisé ce mot le plus de fois est : {president}")
+    else:
+        return f"Aucun président n'a utilisé le mot {mot_recherche}."
 
 
 # 3.5 - Indiquer le premier président à parler du climat et/ou de l’écologie
@@ -244,8 +249,12 @@ def premier_a_parler(dossier, mot_recherche):
             indice_cle = cles.index(mot_recherche)
             nom_president = fichier.split("_")[1].split(".")[0]
             dictionnaire[nom_president] = indice_cle
+
     president = cle_associee_a_val_max_dictionnaire(dictionnaire)
-    return f"Le premier président à parler de {mot_recherche} est {president}"
+    if president != "":
+        return f"Le premier président à parler de {mot_recherche} est {president}"
+    else:
+        return f"Aucun président n'a utilisé le mot {mot_recherche}."
 
 
 # 3.6 - Hormis les mots dits « non importants », liste de(s) mot(s) que tous les présidents ont évoqués

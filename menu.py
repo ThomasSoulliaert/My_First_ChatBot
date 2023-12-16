@@ -1,4 +1,4 @@
-# Menu temporaire de la partie 1 pour tester les fonctions
+# Menu principal
 from main import *
 
 choix = int(input("Tapez 1 pour les fonctionnalités de la Partie 1 OU tapez 2 pour ChatBOT : "))
@@ -46,7 +46,3 @@ elif choix == 2:
 
 else:
     print("Le numéro sélectionné n'existe pas.")
-
-
-"""# Appel de la fonction
-"""
