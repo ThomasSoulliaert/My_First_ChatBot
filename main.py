@@ -204,7 +204,7 @@ def mots_non_importants(matrice):
             somme += matrice[i][j]
         if somme == 0:
             liste.append(matrice[i][0])
-    return liste
+    return f"Voici la liste des mots non importants : {liste}"
 
 
 # 3.2 - Afficher le(s) mot(s) ayant le score TD-IDF le plus élevé
@@ -225,7 +225,7 @@ def mots_importants(matrice):
         if ajouter_mot == True:
             liste.append(matrice[i][0])
 
-    return liste
+    return f"Voici la liste des mots importants : {liste}"
 
 
 # 3.3 - Indiquer le(s) mot(s) le(s) plus répété(s) par un président (dans le test, Chirac)
@@ -241,7 +241,7 @@ def mots_repetes(fichier, dossier):
         if tf[mot] == score:
             liste.append(mot)
 
-    return liste
+    return f"Voici la liste de(s) mot(s) le(s) plus répété(s) par le président Chirac : {liste}"
 
 
 # 3.4 - Indiquer le(s) nom(s) du (des) président(s) qui a (ont) parlé de la « Nation » et celui qui l’a répété le plus de fois
@@ -293,6 +293,7 @@ def premier_a_parler(dossier, mot_recherche):
 
 
 # 3.6 - Hormis les mots dits « non importants », liste de(s) mot(s) que tous les présidents ont évoqués
+# La fonction renvoie le même résultat que la première fonction 'mots_non_importants' car ce sont des mots qui sont utilisés dans les dicours de chacun
 def mots_evoques(dossier):
     file_list = list_of_files(dossier, ".txt")
     tf_reference = TF(file_list[0], dossier)
@@ -346,32 +347,23 @@ def recherche_mots_corpus(question, dossier):
 def TF_IDF(dossier): # 2ème fonction TF_IDF pour avoir 8 lignes correspondant aux 8 documents et n colonnes correspondant aux n mots du corpus
     file_list = list_of_files(dossier, ".txt")
     idf = IDF(dossier)
-
     matrice = []
     for fichier in file_list:
         liste = []
         for mot in idf:
             tf = TF(fichier, dossier)
-
             if mot in tf:
                 tf_idf = tf[mot] * idf[mot]
                 liste.append(tf_idf)
             else:
                 liste.append(0)
-
         matrice.append(liste)
-
     return matrice
-
-matrice = TF_IDF("./cleaned")
-for i in range(len(matrice)):
-    print(matrice[i])
 
 def vecteur_TF_IDF(question, dossier):
     liste = transformer_en_liste_de_mots_une_chaine(question)
     idf = IDF(dossier)
     tf_question = {}
-
     for mot in liste:
         score = 0
         for i in liste:
@@ -386,29 +378,22 @@ def vecteur_TF_IDF(question, dossier):
             liste_tf_idf_question.append(score)
         else:
             liste_tf_idf_question.append(0)
-
     return liste_tf_idf_question
-
-# Appel de la fonction
-question_test = vecteur_TF_IDF("Bonjour, comment allez-vous aujourd'hui ?", "./cleaned")
 
 
 # 4 - Calcul de la similarité
 def produit_scalaire(vecteur1, vecteur2):
     if len(vecteur1) != len(vecteur2):
         return "Les vecteurs ne sont pas de la même longueur, on ne peut pas calculer le produit scalaire."
-
     somme = 0
     for i in range(len(vecteur1)):
         somme += vecteur1[i] * vecteur2[i]
-
     return somme
 
 def norme_vecteur(vecteur):
     somme = 0
     for i in range(len(vecteur)):
         somme += (vecteur[i]) ** 2
-
     resultat = math.sqrt(somme)
     return resultat
 
@@ -416,7 +401,6 @@ def calcul_similarite(vecteur1, vecteur2):
     produit_scalaire_v1v2 = produit_scalaire(vecteur1, vecteur2)
     norme1 = norme_vecteur(vecteur1)
     norme2 = norme_vecteur(vecteur2)
-
     resultat = produit_scalaire_v1v2 / (norme1 * norme2)
     return resultat
 
@@ -427,22 +411,8 @@ def similarite_documents_et_vecteurs(matrice, vecteur, liste):
     for i in range(len(matrice)):
         resultat = calcul_similarite(matrice[i], vecteur)
         dictionnaire[liste[i]] = resultat
-
     return cle_associee_a_val_max_dictionnaire(dictionnaire)
 
-# Appel de la fonction
-"""
-liste_des_fichiers = list_of_files("./cleaned", ".txt")
-
-question1 = "Peux-tu me dire comment une nation peut-elle prendre soin du climat ?"
-question2 = "Quelle est le plus important pour la Nation ?"
-
-Q1 = vecteur_TF_IDF(question1, "./cleaned")
-Q2 = vecteur_TF_IDF(question2, "./cleaned")
-
-print(similarite_documents_et_vecteurs(matrice, Q1, liste_des_fichiers))
-print(similarite_documents_et_vecteurs(matrice, Q2, liste_des_fichiers))
-"""
 
 # 6 - Génération d’une réponse
 def generation_reponse(question, dossier, dossier_origine):
@@ -485,10 +455,21 @@ def generation_reponse(question, dossier, dossier_origine):
             if caractere in separateurs:
                 phrases.append(phrase_actuelle)
                 phrase_actuelle = ""
-
         for phrase in phrases:
             if mot_important in phrase:
                 return phrase
 
-# Appel de la fonction
-print(generation_reponse("Comment une nation peut-elle prendre soin du climat ?", "./cleaned", "./speeches"))
+
+# 7 - Affiner une réponse
+def affinage_reponse(question, dossier, dossier_origine):
+    # Liste de propositions non exhaustives
+    question_starters = {"Comment": "Après analyse, ",
+                         "Pourquoi": "Car, ",
+                         "Peux-tu": "Oui, bien sûr! "}
+    reponse = generation_reponse(question, dossier, dossier_origine)
+    phrase_actuelle = ""
+    for caractere in question:
+        phrase_actuelle += caractere
+        if phrase_actuelle in question_starters.keys():
+            return question_starters[phrase_actuelle] + reponse
+    return reponse
