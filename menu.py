@@ -46,3 +46,7 @@ elif choix == 2:
 
 else:
     print("Le numéro sélectionné n'existe pas.")
+
+
+"""# Appel de la fonction
+"""

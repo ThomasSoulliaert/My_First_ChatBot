@@ -1,8 +1,9 @@
 # Projet Python - My first ChatBOT
-
 import os
 import math
 
+
+# Fonctions d'optimisation du code
 def list_of_files(directory, extension):
     files_names = []
     for filename in os.listdir(directory):
@@ -10,7 +11,8 @@ def list_of_files(directory, extension):
             files_names.append(filename)
     return files_names
 
-def cle_associee_a_val_max_dictionnaire(dictionnaire): # Fonction qui renvoie la clé associée à la plus grande valeur du dictionnnaire
+def cle_associee_a_val_max_dictionnaire(dictionnaire):
+    # Fonction qui renvoie la clé associée à la plus grande valeur du dictionnnaire
     max = 0
     document = ""
     for cle, val in dictionnaire.items():
@@ -26,41 +28,29 @@ def cle_associee_a_val_max_dictionnaire(dictionnaire): # Fonction qui renvoie la
 def extraire_noms_presidents(dossier):
     # code Python utilisé pour parcourir la liste des fichiers d’une extension donnée et dans un répertoire donné
     noms_presidents = []
-
     # Parcourez chaque fichier dans le dossier
     for discours in os.listdir(dossier):
         if discours.endswith(".txt"):
             nom_president = discours.split("_")[1].split(".")[0]
             noms_presidents.append(nom_president)
-
     return noms_presidents
-
-# Appel de la fonction
-liste_noms_presidents = extraire_noms_presidents("speeches")
 
 # Changer la liste principale pour éviter les doublons
 def liste_sans_doublons(liste):
     nouvelle_liste = []
-    
     # Utilisation des slices pour éviter les doublons
     for nom in liste:
-        if nom[:-1] not in nouvelle_liste and nom[-1] in [str(i) for i in range (10)]:
+        if nom[:-1] not in nouvelle_liste and nom[-1] in [str(i) for i in range(10)]:
             nouvelle_liste.append(nom[:-1])
-            
-        elif nom not in nouvelle_liste and nom[-1] not in [str(i) for i in range (10)]:
+        elif nom not in nouvelle_liste and nom[-1] not in [str(i) for i in range(10)]:
             nouvelle_liste.append(nom)
-            
     return nouvelle_liste
-
-# Appel de la fonction
-liste_noms_presidents_sans_doublons = liste_sans_doublons(liste_noms_presidents)
 
 
 # 1.2 - Associer à chaque président un prénom
 def attribution_prenom(liste):
     # Création d'un dictionnnaire pour associer à chaque nom un prénom
     dictionnaire = {}
-
     # Parcourez chaque nom dans la liste
     for nom in liste:
         # Associez le nom à un prénom
@@ -74,14 +64,13 @@ def attribution_prenom(liste):
             dictionnaire[nom] = "Emmanuel"
         elif nom == "Sarkozy":
             dictionnaire[nom] = "Nicolas"
-    
     return dictionnaire
-
-# Appel de la fonction
-dictionnaire_noms_prenoms_presidents = attribution_prenom(liste_noms_presidents_sans_doublons)
 
 
 # 1.3 - Afficher la liste des noms des présidents (sans doublons)
+# Appel de la fonction
+liste_noms_presidents = extraire_noms_presidents("./speeches")
+liste_noms_presidents_sans_doublons = liste_sans_doublons(liste_noms_presidents)
 print("La liste des présidents est : ", liste_noms_presidents_sans_doublons)
 
 
@@ -101,8 +90,7 @@ def convertir_minuscules(dossier_entree, dossier_sortie):
 
         with open(os.path.join(dossier_sortie, fichier), 'w') as file_out:
             file_out.write(contenu)
-
-# Appel de la fonction
+#Appel de la fonction
 convertir_minuscules("./speeches", "./cleaned")
 
 
@@ -114,7 +102,6 @@ def supprimer_ponctuation(dossier):
     for fichier in file_list:
         with open(os.path.join(dossier, fichier), 'r') as file:
             contenu = file.read()
-
             nouveau_contenu = ''
             for c in contenu:
                 if c == "'" or c == '-':
@@ -124,7 +111,6 @@ def supprimer_ponctuation(dossier):
 
         with open(os.path.join(dossier, fichier), 'w') as file_out:
             file_out.write(nouveau_contenu)
-
 # Appel de la fonction
 supprimer_ponctuation("./cleaned")
 
@@ -136,13 +122,11 @@ def TF(fichier, dossier):
     with open(f"{dossier}/{fichier}", "r") as f:
         liste_mots = f.read().split()
         dictionnaire = {}
-
         for mot in liste_mots:
             if mot in dictionnaire:
                 dictionnaire[mot] += 1
             else:
                 dictionnaire[mot] = 1
-
         return dictionnaire
 
 
@@ -150,7 +134,6 @@ def TF(fichier, dossier):
 def IDF(dossier):
     file_list = list_of_files(dossier, ".txt")
     dictionnaire = {}
-
     for fichier in file_list:
         nombre_mots = TF(fichier, dossier)
         for i in nombre_mots:
@@ -158,40 +141,27 @@ def IDF(dossier):
                 dictionnaire[i] += 1
             else:
                 dictionnaire[i] = 1
-
     for key, val in dictionnaire.items():
         dictionnaire[key] = math.log10(len(file_list) / val)
-
     return dictionnaire
-
-# Appel de la fonction
-score_IDF = IDF("./cleaned")
 
 
 # 2.3 - Méthode TF-IDF
 def TF_IDF_Test(dossier):
     file_list = list_of_files(dossier, ".txt")
     idf = IDF(dossier)
-
     matrice = []
     for mot in idf:
         liste = [mot] # On ajoute le mot à la liste pour avoir la colonne n°0 avec tous les mots du corpus
         for fichier in file_list:
             tf = TF(fichier, dossier)
-
             if mot in tf:
                 tf_idf = tf[mot] * idf[mot]
                 liste.append(tf_idf)
             else:
                 liste.append(0)
-
         matrice.append(liste)
-
     return matrice
-
-# Appel de la fonction
-# matrice = TF_IDF_Test("./cleaned")
-# print(matrice)
 
 
 # III - Fonctionnalités à développer
@@ -204,7 +174,7 @@ def mots_non_importants(matrice):
             somme += matrice[i][j]
         if somme == 0:
             liste.append(matrice[i][0])
-    return f"Voici la liste des mots non importants : {liste}"
+    return f"Voici la liste de(s) mot(s) non important(s) : {liste}"
 
 
 # 3.2 - Afficher le(s) mot(s) ayant le score TD-IDF le plus élevé
@@ -224,8 +194,7 @@ def mots_importants(matrice):
                 ajouter_mot = True
         if ajouter_mot == True:
             liste.append(matrice[i][0])
-
-    return f"Voici la liste des mots importants : {liste}"
+    return f"Voici la liste de(s) mot(s) important(s) : {liste}"
 
 
 # 3.3 - Indiquer le(s) mot(s) le(s) plus répété(s) par un président (dans le test, Chirac)
@@ -240,7 +209,6 @@ def mots_repetes(fichier, dossier):
     for mot in tf.keys():
         if tf[mot] == score:
             liste.append(mot)
-
     return f"Voici la liste de(s) mot(s) le(s) plus répété(s) par le président Chirac : {liste}"
 
 
@@ -260,16 +228,7 @@ def apparition_mot(dossier, mot_recherche):
     for president in dictionnaire.keys():
         liste.append(president)
     liste_president = liste_sans_doublons(liste)
-
-    score = 0
-    president = ""
-    for occurrences in dictionnaire.values():
-        if occurrences > score:
-            score = occurrences
-    for cle, val in dictionnaire.items():
-        if val == score:
-            president = cle
-
+    president = cle_associee_a_val_max_dictionnaire(dictionnaire)
     return (f"La liste des président à parler de {mot_recherche} est : {liste_president}",
             f"Le président qui a utilisé ce mot le plus de fois est : {president}")
 
@@ -278,16 +237,13 @@ def apparition_mot(dossier, mot_recherche):
 def premier_a_parler(dossier, mot_recherche):
     file_list = list_of_files(dossier, ".txt")
     dictionnaire = {}
-
     for fichier in file_list:
         tf = TF(fichier, dossier)
         if mot_recherche in tf.keys():
             cles = list(tf.keys())
             indice_cle = cles.index(mot_recherche)
-
             nom_president = fichier.split("_")[1].split(".")[0]
             dictionnaire[nom_president] = indice_cle
-
     president = cle_associee_a_val_max_dictionnaire(dictionnaire)
     return f"Le premier président à parler de {mot_recherche} est {president}"
 
@@ -307,7 +263,6 @@ def mots_evoques(dossier):
                 score += 1
         if score == len(file_list):
             liste.append(mot)
-
     return f"La liste des mots évoqués par tous les présidents est : {liste}"
 
 
@@ -316,7 +271,6 @@ def mots_evoques(dossier):
 def transformer_en_liste_de_mots_une_chaine(chaine):
     liste = []
     mot = ''
-
     for caractere in chaine:
         if caractere.isalpha():
             mot += caractere.lower()
@@ -325,7 +279,6 @@ def transformer_en_liste_de_mots_une_chaine(chaine):
             mot = ''
     if mot not in liste and mot != "":
         liste.append(mot)
-
     return liste
 
 
@@ -334,12 +287,10 @@ def recherche_mots_corpus(question, dossier):
     liste = transformer_en_liste_de_mots_une_chaine(question)
     liste_mots_du_corpus = []
     matrice = TF_IDF_Test(dossier)
-
     for mot in liste:
         for ligne in matrice:
             if mot in ligne:
                 liste_mots_du_corpus.append(mot)
-
     return liste_mots_du_corpus
 
 
