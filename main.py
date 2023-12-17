@@ -26,11 +26,12 @@ def cle_associee_a_val_max_dictionnaire(dictionnaire):
 # I - Fonctionnalités de base
 # 1.1 - Extraire les noms des présidents à partir des noms des fichiers texte fournis
 def extraire_noms_presidents(dossier):
-    # code Python utilisé pour parcourir la liste des fichiers d’une extension donnée et dans un répertoire donné
+    # Code Python utilisé pour parcourir la liste des fichiers d’une extension donnée et dans un répertoire donné
     noms_presidents = []
     # Parcourez chaque fichier dans le dossier
     for discours in os.listdir(dossier):
         if discours.endswith(".txt"):
+            # Pour chaque document, délimitation du nom d président et ajout de ce nom dans la liste
             nom_president = discours.split("_")[1].split(".")[0]
             noms_presidents.append(nom_president)
     return noms_presidents
@@ -76,7 +77,7 @@ print("La liste des présidents est :", liste_noms_presidents_sans_doublons)
 
 # 1.4 - Convertir les textes des 8 fichiers en minuscules et stocker les contenus dans de nouveaux fichiers.
 def convertir_minuscules(dossier_entree, dossier_sortie):
-    # Créer un dossier de sortie s'il n'existe pas
+    # Créer un dossier de sortie s'il n'existe pas (ici, c'est le dossier ./cleaned)
     if not os.path.exists(dossier_sortie):
         os.makedirs(dossier_sortie)
 
@@ -87,7 +88,6 @@ def convertir_minuscules(dossier_entree, dossier_sortie):
     for fichier in file_list:
         with open(os.path.join(dossier_entree, fichier), 'r') as file:
             contenu = file.read().lower()
-
         with open(os.path.join(dossier_sortie, fichier), 'w') as file_out:
             file_out.write(contenu)
 
@@ -96,12 +96,9 @@ convertir_minuscules("./speeches", "./cleaned")
 
 
 def supprimer_ponctuation(dossier):
-    # Liste des fichiers texte dans le dossier
-    file_list = list_of_files(dossier, ".txt")
-
-    # Suppression des virgules dans les fichiers texte
-    for fichier in file_list:
-        with open(os.path.join(dossier, fichier), 'r') as file:
+    file_list = list_of_files(dossier, ".txt") # Liste des fichiers texte dans le dossier
+    for fichier in file_list: # Suppression des virgules dans les fichiers texte
+        with open(os.path.join(dossier, fichier), 'r') as file: # Ouverture et lecture pour chaque fichier de la liste
             contenu = file.read()
             nouveau_contenu = ''
             for c in contenu:
@@ -110,7 +107,7 @@ def supprimer_ponctuation(dossier):
                 elif c not in ['.', ',', ':', '!', '?', ';', '/', '«', '»', '*', '_']:
                     nouveau_contenu += c  # Ajouter le caractère s'il n'est pas une ponctuation
 
-        with open(os.path.join(dossier, fichier), 'w') as file_out:
+        with open(os.path.join(dossier, fichier), 'w') as file_out: # Pour chaque fichier, on réécrit le texte sans la ponctuation
             file_out.write(nouveau_contenu)
 
 # Appel de la fonction
@@ -120,11 +117,10 @@ supprimer_ponctuation("./cleaned")
 # II - La méthode TF-IDF
 # 2.1 - Associer à chaque mot le nombre de fois qu’il apparait dans la chaîne de caractères
 def TF(fichier, dossier):
-    # Création d'un dictionnnaire pour associer à chaque mot un nombre d'occurrence
-    with open(f"{dossier}/{fichier}", "r") as f:
+    with open(f"{dossier}/{fichier}", "r") as f: # Ouverture et lecture du fichier en paramètre
         liste_mots = f.read().split()
-        dictionnaire = {}
-        for mot in liste_mots:
+        dictionnaire = {} # Création d'un dictionnnaire pour associer à chaque mot un nombre d'occurrence
+        for mot in liste_mots: # Attribution du TF pour chaque mot dans la liste de mot
             if mot in dictionnaire:
                 dictionnaire[mot] += 1
             else:
@@ -134,22 +130,22 @@ def TF(fichier, dossier):
 
 # 2.2 - Dictionnaire associant à chaque mot son score IDF
 def IDF(dossier):
-    file_list = list_of_files(dossier, ".txt")
-    dictionnaire = {}
+    file_list = list_of_files(dossier, ".txt") # Liste des fichiers texte dans le dossier
+    dictionnaire = {} # Création d'un dictionnnaire pour associer à chaque mot son IDF
     for fichier in file_list:
-        nombre_mots = TF(fichier, dossier)
-        for i in nombre_mots:
+        nombre_mots = TF(fichier, dossier) # On appelle la fonction TF pour avoir un dictionnaire 'nombre_mots' contenant les  mots du fichier
+        for i in nombre_mots: # Si le mot est dans le dictionnaire principal, on l'ajoute, sinon on lui laisse la valeur de 1.
             if i in dictionnaire:
                 dictionnaire[i] += 1
             else:
                 dictionnaire[i] = 1
-    for key, val in dictionnaire.items():
+    for key, val in dictionnaire.items(): # La valeur maximale de la clé sera celle du nombre de fichiers contenus dans le dossier
         dictionnaire[key] = math.log10(len(file_list) / val)
     return dictionnaire
 
 
 # 2.3 - Méthode TF-IDF
-def TF_IDF_Test(dossier):
+def TF_IDF_Test(dossier): # C'est la fonction Test car il y a autant de lignes que de mots et autant de colonnes que de documents
     file_list = list_of_files(dossier, ".txt")
     idf = IDF(dossier)
     matrice = []
@@ -157,12 +153,12 @@ def TF_IDF_Test(dossier):
         liste = [mot] # On ajoute le mot à la liste pour avoir la colonne n°0 avec tous les mots du corpus
         for fichier in file_list:
             tf = TF(fichier, dossier)
-            if mot in tf:
+            if mot in tf: # Pour chaque mot dans le TF du fichier, si le mot est dans le TF, on calcule son TF_IDF et on l'ajoute à la liste, sinon on y ajoute 0
                 tf_idf = tf[mot] * idf[mot]
                 liste.append(tf_idf)
             else:
                 liste.append(0)
-        matrice.append(liste)
+        matrice.append(liste) # On ajoute la liste à la matrice
     return matrice
 
 
@@ -231,6 +227,10 @@ def apparition_mot(dossier, mot_recherche):
         liste.append(president)
     liste_president = liste_sans_doublons(liste)
     president = cle_associee_a_val_max_dictionnaire(dictionnaire)
+
+    if president[-1] in [str(i) for i in range(10)]:
+        president = president[:-1]
+
     if president != "":
         return (f"La liste des président à parler de {mot_recherche} est : {liste_president}",
                 f"Le président qui a utilisé ce mot le plus de fois est : {president}")
@@ -250,9 +250,21 @@ def premier_a_parler(dossier, mot_recherche):
             nom_president = fichier.split("_")[1].split(".")[0]
             dictionnaire[nom_president] = indice_cle
 
-    president = cle_associee_a_val_max_dictionnaire(dictionnaire)
-    if president != "":
-        return f"Le premier président à parler de {mot_recherche} est {president}"
+    # On recherche l'indice minimum dans le dictionnaire
+    min = 1000
+    indice = 0
+    president = ""
+    for cle, val in dictionnaire.items():
+        if min > val:
+            min = val
+            president = cle
+            indice = min
+
+    if president[-1] in [str(i) for i in range(10)]:
+        president = president[:-1]
+
+    if president != "" and indice != 0:
+        return f"Le premier président à parler de {mot_recherche} est {president} à l'indice {indice}"
     else:
         return f"Aucun président n'a utilisé le mot {mot_recherche}."
 
@@ -261,16 +273,16 @@ def premier_a_parler(dossier, mot_recherche):
 # La fonction renvoie le même résultat que la première fonction 'mots_non_importants' car ce sont des mots qui sont utilisés dans les dicours de chacun
 def mots_evoques(dossier):
     file_list = list_of_files(dossier, ".txt")
-    tf_reference = TF(file_list[0], dossier)
+    tf_reference = TF(file_list[0], dossier) # On créé un dictionnaire TF de référence (Si tous les présidents ont utilisé ces mots, ils sont forcément dans chaque document)
     liste = []
 
     for mot in tf_reference.keys():
         score = 0
         for fichier in file_list:
             tf = TF(fichier, dossier)
-            if mot in tf.keys():
+            if mot in tf.keys(): # Si le mot est dans le TF de référence, on lui ajoute 1
                 score += 1
-        if score == len(file_list):
+        if score == len(file_list): # Si le mot est dans tous les TF, alors il est utilisé par tous les présidents dans les documents
             liste.append(mot)
     return f"La liste des mots évoqués par tous les présidents est : {liste}"
 
@@ -295,7 +307,7 @@ def transformer_en_liste_de_mots_une_chaine(chaine):
 def recherche_mots_corpus(question, dossier):
     liste = transformer_en_liste_de_mots_une_chaine(question)
     liste_mots_du_corpus = []
-    matrice = TF_IDF_Test(dossier)
+    matrice = TF_IDF_Test(dossier) # Jusqu'ici, on utilisait la première version du TF-IDF
     for mot in liste:
         for ligne in matrice:
             if mot in ligne:
@@ -324,7 +336,7 @@ def vecteur_TF_IDF(question, dossier):
     liste = transformer_en_liste_de_mots_une_chaine(question)
     idf = IDF(dossier)
     tf_question = {}
-    for mot in liste:
+    for mot in liste: # Calcul du TF de chaque mot de la question
         score = 0
         for i in liste:
             if i == mot:
@@ -332,7 +344,7 @@ def vecteur_TF_IDF(question, dossier):
         tf_question[mot] = score/len(liste)
 
     liste_tf_idf_question = []
-    for mot in idf:
+    for mot in idf: # On créé le vecteur TF-IDF de la question
         if mot in liste:
             score = tf_question[mot] * idf[mot]
             liste_tf_idf_question.append(score)
@@ -350,7 +362,8 @@ def produit_scalaire(vecteur1, vecteur2):
         somme += vecteur1[i] * vecteur2[i]
     return somme
 
-def norme_vecteur(vecteur):
+def norme_vecteur(vecteur): # La fonction prend en paramètre un vecteur A puis calcule et
+                            # retourne la racine carrée de la somme des carrés de ses composantes
     somme = 0
     for i in range(len(vecteur)):
         somme += (vecteur[i]) ** 2
@@ -368,7 +381,7 @@ def calcul_similarite(vecteur1, vecteur2):
 # 5 - Calcul du document le plus pertinent
 def similarite_documents_et_vecteurs(matrice, vecteur, liste):
     dictionnaire = {}
-    for i in range(len(matrice)):
+    for i in range(len(matrice)): # Pour chaque ligne du TF-IDF, on la compare avec le vecteur TF-IDF de la question
         resultat = calcul_similarite(matrice[i], vecteur)
         dictionnaire[liste[i]] = resultat
     return cle_associee_a_val_max_dictionnaire(dictionnaire)
