@@ -114,13 +114,118 @@ On vérifie ensuite si le caractère est alphabétique (s'il se situe entre 'a' 
 # 2 - Recherche de mots de la question dans le Corpus
 
 La fonction "recherche_mots_corpus" commence par appeler de la fonction "transformer_en_liste_de_mots_une_chaine(question)", qui transforme la chaine de caractères de la question en une liste de mots.
-Ensuite la fonction crée une matrice TF IDF à partir du corpus en appelant la focntion TF_IDF(dossier).
+Ensuite la fonction crée une maatrice TF IDF à partir du corpus en appelant la focntion TF_IDF(dossier).
 La fonction parcourt chaque mot de la liste obtenue à partir de la question (liste) et parcourt ensuite chque ligne de la matrice TF-IDF. Si le mot est préent dans une ligne d ela matrice, il est ajouté à la liste liste_mots_du_corpus.
 La fonction retourne la liste liste_mots_du_corpus qui contient le smots de la question qui sont présent.
 
 # 3 - Calcul de vecteur TF-IDF pour les termes de la question
 
+La fonction TF_IDF a pour objectif de calculer la matrice TF-IDF pour chaque terme dans chaque document du corpus. 
 La fonction "TF_IDF_2" commence par obtenir une liste de fichiers texte présents dans le dossier spéifié en appelant la fonction list_of_files(dossier, ".txt"). 
+Ces fichiers représentent les documents du corpus. Ensuite, elle initialise une matrice vide qui sera remplie avec les valeurs TF-IDF. Chaque ligne de cette matrice représente un terme, et chaque colonne représente un document.
+Pour chaque terme dans le corpus, la fonction  utilise la fonction TF(fichier, dossier) pour calculer le nombre d'occurrences de ce terme dans chaque document. Elle utilise également la  fonction IDF(dossier) pour calculer le score IDF du terme dans l'ensemble du corpus.
+La fonction remplit remplit la matrice avec les valeurs TF-IDF calculées pour chaque terme dans chaque document. Chaque élément de la matrice représente le score TF-IDF d'un terme dans un document spécifique.
+Enfin, la  fonction renvoie la matrice complète, où chaque ligne correspond à un terme et chaque colonne correspond à un document, avec les valeurs TF-IDF calculées.
+
+
+La fonction vecteur_TF_IDF vise à calculer le vecteur TF-IDF pour les termes présents dans une question spécifiée. Ce vecteur représente l'importance relative de chaque terme dans la question par  rapport à l'ensemble du corpus.
+La fonction utilise la fonctionn transformer_en_liste_de_mots_une_chaine  pour obtenir une liste de mots à partir de la question. Cette liste contient tous les termes de la question, sans doublons.
+
+Pour chaque terme dans la liste obtenue, la fonction calcule le score TF en comptant combien de fois ce terme apparaît dans la question. Le score tf, représente la fréquence d'un terme dans une question, ce qui équivaut à diviser le nombre d'occurrences du terme par la longueurr totale de la liste de mots de la question.
+
+En utilisant la fonction IDF(dossier), la fonction calcule le score IDF pour chaque terme présent dans la liste de mots. Le score TF-IDF est obtenu en multipliant le score TF par le score IDF correspondant à chaque  terme.
+
+La fonction assemble les scores TF-IDF calculés pour chaque terme dans la liste de mots, et produit un vecteur TF-IDF.
+
+La fonction renvoie le vecteur TF-IDF résultant, où chaque élément du vecteur correspond à l'importance d'un terme dans la question.
+
+
+
+# 4- Calcul de la Similarité
+
+La fonction produit_scalaire(vecteur1, vecteur2) calcule le produit scalaire entre deux vecteurs. Tout d'abord, c'est quoi un produit scalaire: le produit scalaire entre deux vecteurs est défini comme la somme des produits de leurs composantes correspondantes.
+La fonction commence par vérifier si les deux vecteurs ont la même dimension. Si ce n'est pas le cas, la fonction renvoie un message indiquant que les vecteurs ne peuvent pas être comparés.
+Si les vecteurs ont la même dimension, la fonction calcule le produit scalaire en itérant sur chaque composante des vecteurs et en accumulant la somme des produits.
+La fonction renvoie le résultat du produit scalaire .
+
+
+La fonction norme_vecteur(vecteur) a pour objectif de calculer la norme d'un vecteur. La norme d'un vecteur est la racine carrée de la somme des carrés de ses composantes.
+La fonction commence par initialiser une variable, somme, à zéro. Cette variable va stocker la sommme des carrés des composantes du vecteur.
+La fonction itère sur chaque composante du vecteur, élève chaque composante au carré, et ajoute le résultat à la somme.
+Une fois que la somme des  carrés est obtenue, la fonction calcule la racine carrée de cette somme. Cela donne la norme du vecteur.
+La fonction renvoie la valeur calculée, qui représente la norme du vecteur.
+
+
+La fonction calcul_similarite a pour objectif de mesurer la similarité cosinus entre deux vecteurs. Elle évalue dans quelle mesure ces vecteurs pointent dans la même direction dans l'espace vectoriel.
+
+La fonction commence par calculer le produit scalaire entre les deux vecteurs V1 et V2 à l'aaide la fonction produit_scalaire.
+
+Ensuite, la fonction calcule les normes des deux vecteurs à l'aide de la focntion norme_vecteur. 
+
+En utilisant le produit scalaire et les normes des vecteurs, la fonction  calcule la similarité cosinus à l'aide de la formule : 
+Produit Scalaire/Norme(V1).Norme(V2)
+La fonction renvoie la similarité cosinus
+
+
+# 5- Calcul du document le plus pertinent
+
+La fonction vise à déterminer quel document dans la matrice (représentant les documents originaux) est  leplus similaire à la question posée, en utilisant le calcul du produit scalaire entre les vecteurs TF-IDF. 
+
+La fonction commence par initialiser un dictionnaire vides (dictionnaire) qui sera utilisé pour stocker les mesures de similarité entre le vecteur de la question et les vecteurs de chaque document.
+
+La fonction itère sur chaque ligne de la matrice  (représentant les vecteurs TF-IDF des documents) et calcule le produit scalaire entre le vecteur de la question et chaque vecteur de document.
+
+Les mesures de similarité sont stockées dans le dictionnnaire, qui  associe chaque document à sa mesure de similarité.
+
+La fonction utilise la fonction cle_associee_a_val_max_dictionnaire (qui retourne la clé associée à la plus grande valeur dans le dictionnaire) pour déterminer quel document a la mesure  de similarité la plus élevée.
+
+La fonction renvoie le document le plus simimlaire à la question, basé sur le produit scalaire des vecteurs.
+
+
+
+# 6 - Génération d'une réponse
+
+La fonction generation_reponse(question, dossier, dossier_origine) a pour objectif de générer une réponse à une question en utilisant la similarité entre le vecteur de la question et les vecteurs des documents dans la matrice TF-IDF. La réponse est générée en identifiant le document le plus similaire à la question et en extrayant une phrase pertinente de ce document.
+
+La fonction utilise la fonction vecteur_TF_IDF pour calculer le vecteur TF-IDF de  la  question, représentant la question dans l'espace des termes du corpus.
+La fonction utilise la fonction TF_IDF pour calculer la matrice TF-IDF des documents dans le dossier spécifié.
+La fonction utilise la fonction similarite_documents_et_vecteurs pour identifier le document le plus similaire à la question, basé sur la similarité entre les vecteurs.
+La fonction utilise la fonction vecteur_TF_IDF pour identifier le mot ayant le score TF-IDF le plus élevé dans la question. Ce mot est utilisé pour extraire une phrase pertinente du document le plus similaire.
+La fonction lit le contenu du document le plus similaires (dans le dossier d'origine) et identifie la première phrase contenant le mot important.
+
+La question est d'abord transformée en une ldiste de mots à l'aide de la fonction transformer_en_liste_de_mots_une_chaine(question). Chaque mot est extrait de la question et ajouté à la liste.
+
+
+La fonction IDF(dossier) est utilisée pour calculer l'IDF  de chaque mot dans le corpus de documents spécifié par le dossier.
+Un dictionnaire tf_question est créé pour stocke r le score TF-IDF de chaque mot de la question. Le score TF-IDF est calculé en comptant le nombre d'occurrences de chaque mot dans la quesstion  et en normalisant par la longueur de la question.
+Création d'un dictionnaire des sscores TF-IDF pour chaque mot du corpus :
+
+Un dictionnaire dictionnaire est créé pour associer chaque mot du corpus (calculé à partir de l'IDF) à son score TF-IDF dans la question. Si un mot n'est pas présent dans la question, son score est mis à zéro.
+
+La fonction cle_associee_a_val_max_dictionnaire(dictionnaire) est utilisée pour identifier le mot ayant le score TF-IDF le plus élevé dans la question. Ce mot est considéré comme le mot le plus important dans le contexte de la question.
+Le mot important est recherchéé dans le contenu de ce document.
+Le contenu du   document est lu, et les phrases  sont extraites en utilisant des séparateurs tels que '.', '!', '?'.
+La première phrase contenant le mot important est identifiée, et cette phrase est renvoyée comme résultat.
+On veut à identifier le mot le plus important dans la question, puis à rechercher ce mot dans le document le plus similaire pour extraire une phrase associée à ce mot. 
+
+# 7 - Affiner une réponse
+
+La fonction affinage_reponse(question, dossier, dossier_origine) a pour objectif d'affiner la réponse générée en ajoutant une formulation initiale basée sur le type de question posée.
+
+Une liste appelée question_starters est définie, associant des formulations initiales à différents types de questions (par exemple, "Comment", "Pourquoi", "Peux-tu").
+La fonction generation_reponse est appelee avec la question, le dossier contenant les documents, et le dossier d'origine pour générer une réponse de base.
+
+La fonction itère sur les formulations initiales dans la liste question_starters pour vérifier si la question commence par l'une de ces formulations.
+Si une correspondance est trouvée, la réponse de base est précédée par la formulation initiale correspondante.
+
+La réponse est renvoyée comme résultat final.
+En résumé, la fonction affinage_reponse apporte une formulation initiale à la réponse générée en fonction du type de question posée.
+
+
+
+# FIN
+
+
 
 
 
