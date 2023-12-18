@@ -212,7 +212,7 @@ On veut à identifier le mot le plus important dans la question, puis à recherc
 
 La fonction affinage_reponse(question, dossier, dossier_origine) a pour objectif d'affiner la réponse générée en ajoutant une formulation initiale basée sur le type de question posée.
 
-Une liste appelée question_starters est définie, associant des formulations initiales à différents types de questions (par exemple, "Comment", "Pourquoi", "Peux-tu").
+Une liste appelée question_starters est définie, et associe des formulations à différents types de questions (par exemple, "Comment", "Pourquoi", "Peux-tu").
 La fonction generation_reponse est appelee avec la question, le dossier contenant les documents, et le dossier d'origine pour générer une réponse de base.
 
 La fonction itère sur les formulations initiales dans la liste question_starters pour vérifier si la question commence par l'une de ces formulations.
