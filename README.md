@@ -164,7 +164,8 @@ En résumé, la fonction affinage_reponse apporte une formulation initiale à la
 
 
 # Fichier menu.py
-
+On demande à l'utilisateur de choisir entre les fonctionnalités de la Partie 1 ou le ChatBot. Pour cela, on lui demande de saisir un chiffre, 1 pour les fonctionnalités de la Partie 1 ou 2 pour le chatBot, et cette valeur va etre stockée dans "choix". Maintenant, trois posibiltés s'offre à l'utilisateur:
+- La première possibilité est que l'utilisateur est entré 1. Alors, on va maintenant lui demander le numéro de la question qu'il souhaite. Là encore plusiseurs choix sont possibles. Les choix peuevent aller du chiffre 1 à 6 et aussi la possibilité que l'utilisateur saisisse un numéro ou un caractère autre que les chiffres entre 1 et 6, et dans ce cas, il va s'afficher "Le numéro de l'exercice ne correspond pas.". Maintenant, on s'intéresse aux questions allant de 1 à 6. la première question cherche à renvoyer tous les mots dit "non important", c'est à dire, un mot où son TF-IDF = 0 dans tous les fichiers.
 
 # FIN
 
