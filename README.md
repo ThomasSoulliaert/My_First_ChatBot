@@ -140,7 +140,7 @@ La fonction utilise la fonction similarite_documents_et_vecteurs pour identifier
 La fonction utilise la fonction vecteur_TF_IDF pour identifier le mot ayant le score TF-IDF le plus élevé dans la question. Ce mot est utilisé pour extraire une phrase pertinente du document le plus similaire.
 La fonction lit le contenu du document le plus similaires (dans le dossier d'origine) et identifie la première phrase contenant le mot important.
 
-La question est d'abord transformée en une ldiste de mots à l'aide de la fonction transformer_en_liste_de_mots_une_chaine(question). Chaque mot est extrait de la question et ajouté à la liste.
+La question est d'abord transformée en une liste de mots à l'aide de la fonction transformer_en_liste_de_mots_une_chaine(question). Chaque mot est extrait de la question et ajouté à la liste.
 La fonction IDF(dossier) est utilisée pour calculer l'IDF  de chaque mot dans le corpus de documents spécifié par le dossier.
 Un dictionnaire tf_question est créé pour stocke r le score TF-IDF de chaque mot de la question. Le score TF-IDF est calculé en comptant le nombre d'occurrences de chaque mot dans la quesstion  et en normalisant par la longueur de la question.
 Création d'un dictionnaire des sscores TF-IDF pour chaque mot du corpus :
