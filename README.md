@@ -83,7 +83,7 @@ L'objectif de la fonction "mots_evoques" est de lister les mots que tous les pr�
 
 # Partie II
 # 1 - Tokenisation de la question
-La fonction "transformer_en_liste_de_mots_une_chaine" a pour onjectif principal de prendre une chaîine de caractères en entrée et de renvoyer une liste contenant tous les mots présents dasns cette cahîne.
+La fonction "transformer_en_liste_de_mots_une_chaine" a pour objectif principal de prendre une chaîine de caractères en entrée et de renvoyer une liste contenant tous les mots présents dasns cette cahîne.
 
 Dans cette fonction, on initialise d'abord une liste vide "liste = []".
 Cette liste va contenir les mots extraits de la chaîne, et une chaîne de caractères vide (mot) qui servira à construire les mots au fur et à mesure du parocurs de la chaîne;
