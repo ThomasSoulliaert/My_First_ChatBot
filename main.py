@@ -39,12 +39,11 @@ def extraire_noms_presidents(dossier):
 # Changer la liste principale pour éviter les doublons
 def liste_sans_doublons(liste):
     nouvelle_liste = []
-    # Utilisation des slices pour éviter les doublons
-    for nom in liste:
-        if nom[:-1] not in nouvelle_liste and nom[-1] in [str(i) for i in range(10)]:
-            nouvelle_liste.append(nom[:-1])
-        elif nom not in nouvelle_liste and nom[-1] not in [str(i) for i in range(10)]:
-            nouvelle_liste.append(nom)
+    for president in liste:
+        if president[-1] in [str(i) for i in range(10)]:
+            president = president[:-1]
+        if president not in nouvelle_liste:
+            nouvelle_liste.append(president)
     return nouvelle_liste
 
 
