@@ -11,8 +11,10 @@ Noms des professeurs:
 - CHABCHOUB Kamel
 - YAHIAOUI Itheri
 
-Fonctionnalités principales : 
-Partie I
+
+# Fichier main.py
+# Fonctionnalités principales : 
+# Partie I
 
 # 1.1 - Extraire les noms des présidents à partir des noms des fichiers texte fournis
 Pour la première fonction, nous avons extrait les noms des présidents à partir des noms des fichiers texte fournis. La fonction s’appelle “extraire_noms_presidents” et prend en paramètre un dossier. Nous avons initialisé une liste “noms_presidents”, puis nous parcourons chaque discours dans le dossier “spechees”. Si le type du fichier se termine par “.txt”, alors nous utilisons les “split” pour délimiter la partie du titre du fichier qui nous intéresse. Le [1] sert à prendre la partie après le caractère indiqué (ici, “_”) et le [0] sert à prendre la partie avant le caractère indiqué (ici, le “.”). Enfin, nous ajoutons ce que nous venons de délimiter à la liste “noms_presidents” et nous renvoyons la liste. 
@@ -79,7 +81,7 @@ La fonction premier_a_parler a pour objectif d'indiquer le premier président à
 L'objectif de la fonction "mots_evoques" est de lister les mots que tous les présidents ont évoqués, sauf les mots "non importants" (ceux avec un score TF-IDF de 0 dans tous les fichiers). La fonction prend en paramètre le nom du dossier (dossier) contenant les fichiers sur lesquels la recherche se base. Elle utilise la fonction  "list_of_files" pour obtenir la liste des fichiers du dossier. Elle utilise la fonction TF pour obtenir la fréquence d'apparition de chaque mot dans le premier fichier de la liste (file_list[0]), qui sert de référence. Elle initialise une liste vide (liste) qui stockera les mots évoqués par par tous les présidents. Elle parcourt chaque mot dans le dictionnaire de fréquence de référence. Pour chaque mot, elle vérifie s'il est présent dans la fréquence d'apparition de chaque président (dans chaque fichier du dossier). Si le mot est présent dans tous les fichiers, elle l'ajoute à la liste des mots évoqués par tous les présidents et retourne la liste.
 
 
-Partie II
+# Partie II
 # 1 - Tokenisation de la question
 La fonction "transformer_en_liste_de_mots_une_chaine" a pour onjectif principal de prendre une chaîine de caractères en entrée et de renvoyer une liste contenant tous les mots présents dasns cette cahîne.
 
@@ -159,6 +161,9 @@ La fonction itère sur les formulations initiales dans la liste question_starter
 Si une correspondance est trouvée, la réponse de base est précédée par la formulation initiale correspondante.
 La réponse est renvoyée comme résultat final.
 En résumé, la fonction affinage_reponse apporte une formulation initiale à la réponse générée en fonction du type de question posée.
+
+
+# Fichier menu.py
 
 
 # FIN
