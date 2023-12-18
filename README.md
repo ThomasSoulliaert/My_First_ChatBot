@@ -175,7 +175,7 @@ On demande à l'utilisateur de choisir entre les fonctionnalités de la Partie 1
 - La deuxième possibilité est que l'utilisateur ait entré 2, alors on va lui demander de saisir sa propore question. On va ensuite utiliser la fonction "affinage_reponse" (expliquée plus haut, Partie II) avec comma paramètres la question choisi par l'utilisateur et les fichiers contenant les discours des présidents. On va ensuite afficher la réponse donné.
 - La dernière possibilité est que l'utilisateur ait entré une valeur autre que 1 ou 2, et il va alors s'afficher "Le numéro sélectionné n'existe pas."
 
-# FIN
+# FIN 
 
 
 
