@@ -1,6 +1,8 @@
 ### My_First_ChatBot
 
-EFREI Paris, P1, Groupe D5 :
+EFREI Paris, P1, Groupe D5
+
+Date de rendu : 19/12/2023
 
 Noms des membre de l’équipe projet:
 - BIVILLE Guillaume
