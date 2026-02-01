@@ -1,6 +1,6 @@
-# pychatbot-biville-lefrancq-soulliaert-d
-test
-EFREI Paris, L1, Groupe D, Groupe 5 :
+### My_First_ChatBot
+
+EFREI Paris, P1, Groupe D5 :
 
 Noms des membre de l’équipe projet:
 - BIVILLE Guillaume
@@ -12,10 +12,11 @@ Noms des professeurs:
 - YAHIAOUI Itheri
 
 
-# Fichier main.py
-# Fonctionnalités principales : 
-# Partie I
+### Fichier main.py
 
+
+### Partie I
+## I - Fonctions de base
 # 1.1 - Extraire les noms des présidents à partir des noms des fichiers texte fournis
 Pour la première fonction, nous avons extrait les noms des présidents à partir des noms des fichiers texte fournis. La fonction s’appelle “extraire_noms_presidents” et prend en paramètre un dossier. Nous avons initialisé une liste “noms_presidents”, puis nous parcourons chaque discours dans le dossier “spechees”. Si le type du fichier se termine par “.txt”, alors nous utilisons les “split” pour délimiter la partie du titre du fichier qui nous intéresse. Le [1] sert à prendre la partie après le caractère indiqué (ici, “_”) et le [0] sert à prendre la partie avant le caractère indiqué (ici, le “.”). Enfin, nous ajoutons ce que nous venons de délimiter à la liste “noms_presidents” et nous renvoyons la liste. 
 
@@ -40,7 +41,7 @@ Enfin on sauvegarde dans le dossier de sortie :  Ouvre un nouveau fichier dans l
 Pour la fonction "supprimer_ponctuation", l'objectif est de supprimer certains caractères de ponctuation spécifiques des fichiers texte dans un dossier. On  utilise la fonction "list_of_files"" pour obtenir la liste des fichiers texte dans le dossier spécifié. Ensuite pour chaque fichier, on ouvre le fichier en lecture ('r'), on lit son contenu et on crée un nouveau contenu en remplaçant certains caractères de ponctuation spécifiques par des espaces, et en conservant les autres caractères. Puis on écrit le nouveau contenu dans le même fichier.
 
 
-# II - La méthode TF-IDF
+## II - La méthode TF-IDF
 # 2.1 - Associer à chaque mot le nombre de fois qu’il apparait dans la chaîne de caractères
 La fonction TF a pour objectif d'associer à chaque mot le nombre de fois qu'il apparaît dans une chaîne de caractères provenant d'un fichier texte. La fonction prend en paramètre le nom du fichier (fichier) à partir duquel elle va extraire le texte. Elle ouvre le fichier, lit son contenu, et divise le texte en une liste de mots. En utilisant un dictionnaire (dictionnaire), elle parcourt la liste de mots et compte le nombre d'occurrences de chaque mot. Si le mot est déjà présent dans le dictionnaire, son compteur est incrémenté. Sinon, une nouvelle entrée est créée avec le compteur initialisé à 1. à la fin , la fonction retourne le dictionnaire résultant qui associe chaque mot à son nombre d'occurrences dans le fichier.
 
@@ -56,7 +57,7 @@ En résumé, le programme calcule d'abord la fréquence d'apparition de chaque m
 La fonction "TF_IDF" vise à calculer la matrice TF-IDF pour chaque mot dans chaque fichier d'un dossier. La fonction prend en paramètre le nom du dossier (dossier) contenant les fichiers sur lesquels le calcul TF-IDF sera effectué. Elle utilise la fonction ""list_of_files" pour obtenir la liste des fichiers du dossier et la fonction IDF pour obtenir le score IDF de chaque mot. Elle initialise une matrice vide (matrice) qui stockera les valeurs TF-IDF pour chaque mot dans chaque fichier. Elle parcourt chaque mot présent dans le score IDF (obtenu à partir de la fonction IDF). Pour chaque mot, elle crée une liste qui commence par ce mot et ensuite ajoute les valeurs TF-IDF pour ce mot dans chaque fichier du dossier, (la valeur TF-IDF pour un mot dans un fichier est calculée en multipliant le score TF obtenu à partir de la fonction TF et le score IDF obtenu précédemment. Si le mot n'est pas présent dans le fichier, elle ajoute 0 à la liste. La liste est ensuite ajoutée à la matrice. La fonction retourne la matrice résultante qui contient les valeurs TF-IDF pour chaque mot dans chaque fichier.
 
 
-# III - Fonctionnalités à développer
+## III - Fonctionnalités à développer
 # 3.1 - Afficher la liste des mots les moins importants dans le corpus de documents (TD-IDF = 0 dans tous les fichiers)
 La fonction "mots_non_importants" a pour objectif d'afficher la liste des mots les moins importants dans le corpus de documents, c'est-à-dire ceux ayant un score TF-IDF égal à 0 dans tous les fichiers. POur le faire la fonction prend en paramètre la matrice TF-IDF (matrice) générée précédemment. Elle répète sur chaque ligne de la matrice, représentant un mot. Pour chaque mot, elle calcule la somme de ses scores TF-IDF dans tous les fichiers. Et si la somme est égale à 0, cela signifie que le mot a un score TF-IDF nul dans tous les fichiers, et il est ajouté à la liste des mots non importants.
 
@@ -81,7 +82,7 @@ La fonction premier_a_parler a pour objectif d'indiquer le premier président à
 L'objectif de la fonction "mots_evoques" est de lister les mots que tous les présidents ont évoqués, sauf les mots "non importants" (ceux avec un score TF-IDF de 0 dans tous les fichiers). La fonction prend en paramètre le nom du dossier (dossier) contenant les fichiers sur lesquels la recherche se base. Elle utilise la fonction  "list_of_files" pour obtenir la liste des fichiers du dossier. Elle utilise la fonction TF pour obtenir la fréquence d'apparition de chaque mot dans le premier fichier de la liste (file_list[0]), qui sert de référence. Elle initialise une liste vide (liste) qui stockera les mots évoqués par par tous les présidents. Elle parcourt chaque mot dans le dictionnaire de fréquence de référence. Pour chaque mot, elle vérifie s'il est présent dans la fréquence d'apparition de chaque président (dans chaque fichier du dossier). Si le mot est présent dans tous les fichiers, elle l'ajoute à la liste des mots évoqués par tous les présidents et retourne la liste.
 
 
-# Partie II
+### Partie II
 # 1 - Tokenisation de la question
 La fonction "transformer_en_liste_de_mots_une_chaine" a pour objectif principal de prendre une chaîine de caractères en entrée et de renvoyer une liste contenant tous les mots présents dasns cette cahîne.
 
@@ -97,8 +98,8 @@ La fonction "recherche_mots_corpus" commence par appeler de la fonction "transfo
 Ensuite la fonction crée une maatrice TF IDF à partir du corpus en appelant la focntion TF_IDF(dossier).
 La fonction parcourt chaque mot de la liste obtenue à partir de la question (liste) et parcourt ensuite chque ligne de la matrice TF-IDF. Si le mot est préent dans une ligne d ela matrice, il est ajouté à la liste liste_mots_du_corpus. La fonction retourne la liste liste_mots_du_corpus qui contient le smots de la question qui sont présent.
 
-# 3 - Calcul de vecteur TF-IDF pour les termes de la question
 
+# 3 - Calcul de vecteur TF-IDF pour les termes de la question
 La fonction TF_IDF a pour objectif de calculer la matrice TF-IDF pour chaque terme dans chaque document du corpus. 
 La fonction "TF_IDF_2" commence par obtenir une liste de fichiers texte présents dans le dossier spéifié en appelant la fonction list_of_files(dossier, ".txt"). 
 Ces fichiers représentent les documents du corpus. Ensuite, elle initialise une matrice vide qui sera remplie avec les valeurs TF-IDF. Chaque ligne de cette matrice représente un terme, et chaque colonne représente un document. Pour chaque terme dans le corpus, la fonction  utilise la fonction TF(fichier, dossier) pour calculer le nombre d'occurrences de ce terme dans chaque document. Elle utilise également la  fonction IDF(dossier) pour calculer le score IDF du terme dans l'ensemble du corpus. La fonction remplit remplit la matrice avec les valeurs TF-IDF calculées pour chaque terme dans chaque document. Chaque élément de la matrice représente le score TF-IDF d'un terme dans un document spécifique. Enfin, la  fonction renvoie la matrice complète, où chaque ligne correspond à un terme et chaque colonne correspond à un document, avec les valeurs TF-IDF calculées.
@@ -165,6 +166,8 @@ En résumé, la fonction affinage_reponse apporte une formulation initiale à la
 
 # Fichier menu.py
 On demande à l'utilisateur de choisir entre les fonctionnalités de la Partie 1 ou le ChatBot. Pour cela, on lui demande de saisir un chiffre, 1 pour les fonctionnalités de la Partie 1 ou 2 pour le chatBot, et cette valeur va etre stockée dans "choix". Maintenant, trois posibiltés s'offre à l'utilisateur:
+
+
 # Première Possibilité:
 La première possibilité est que l'utilisateur ait entré 1. Alors, on va maintenant lui demander le numéro de la question qu'il souhaite. Là encore, plusieurs choix sont possibles. Les choix peuvent aller du chiffre 1 à 6 et aussi la possibilité que l'utilisateur saisisse un numéro ou un caractère autre que les chiffres entre 1 et 6, et dans ce cas, il va s'afficher "Le numéro de l'exercice ne correspond pas.". Maintenant, on s'intéresse aux questions allant de 1 à 6, mais avant cela, on initialise "matrice_test" au "TF_IDF_Test".
 
@@ -180,6 +183,7 @@ La première possibilité est que l'utilisateur ait entré 1. Alors, on va maint
   
 -Pour la dernière question, on cherche les mots les plus évoqués par les présidents. On utilise la fonction "mots_evoques" (expliquée plus haut, 3.6) avec comme paramètre le fichier avec tous les discours. On va ensuite afficher cette liste. La fonction renvoie le même résultat que la première fonction 'mots_non_importants' car ce sont des mots qui sont utilisés dans les discours de chacun.
 
+
 # Deuxième Possibilité 
 La deuxième possibilité est que l'utilisateur ait entré 2, alors on va lui demander de saisir sa propre question. On va ensuite utiliser la fonction "affinage_reponse" (expliquée plus haut, Partie II) avec comme paramètres la question choisie par l'utilisateur et les fichiers contenant les discours des présidents. On va ensuite afficher la réponse donnée.
 
@@ -187,11 +191,5 @@ La deuxième possibilité est que l'utilisateur ait entré 2, alors on va lui de
 # Dernière Possibilité 
 La dernière possibilité est que l'utilisateur ait entré une valeur autre que 1 ou 2, et il va alors s'afficher "Le numéro sélectionné n'existe pas."
 
+
 # FIN 
-
-
-
-
-
-
-
